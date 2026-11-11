@@ -19,6 +19,7 @@
   };
   let current = getStep();
   let answers = {};
+  if (current === 1) { try { sessionStorage.removeItem(STORAGE_KEY); } catch (_err) {} }
   try { answers = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch (_err) { answers = {}; }
   const remember = () => { try { sessionStorage.setItem(STORAGE_KEY,JSON.stringify(answers)); } catch (_) {} };
   const rememberTraffic = () => {
@@ -306,7 +307,7 @@
       answers.exactAge=age;remember();return goTo(20);
     }
     if(button.hasAttribute('data-back'))return goTo(current-1);
-    if(button.hasAttribute('data-age')){answers.ageRange=button.getAttribute('data-age');remember();return goTo(2);}
+    if(button.hasAttribute('data-age')){answers={ageRange:button.getAttribute('data-age')};remember();return goTo(2);}
     if(button.hasAttribute('data-next')){
       if(current>=16&&current<=18){const key=current===16?'height':current===17?'currentWeight':'targetWeight'; if(answers[key]===undefined)answers[key]=current===16?165:current===17?73:57;remember();}
       return goTo(current+1);

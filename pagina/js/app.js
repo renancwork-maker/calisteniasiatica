@@ -10,6 +10,9 @@
   const VTURB_LIB = 'https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js';
   const VTURB_STREAM = 'https://cdn.converteai.net/e040da1c-3494-4229-81c5-b7e4caf21ba7/6af4951bdd977102737c257c/main.m3u8';
   const STORAGE_KEY = 'atlas_calisthenia_21d_answers';
+  const OFFER_START_KEY = 'atlas_calisthenia_21d_offer_started';
+  const OFFER_UNLOCK_MS = 323000; // 5m23s após abrir a oferta
+  let offerUnlockTimer = null;
   const UTM_KEY = 'atlas_calisthenia_21d_traffic';
   const SELECTED_KEYS = new Set(['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id','src','sck','xcod','subid','subid1','subid2','subid3','subid4','subid5','fbclid','gclid','gbraid','wbraid','msclkid','ttclid','gad_source']);
   const escapeHTML = (input) => String(input ?? '').replace(/[&<>"']/g, ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -135,14 +138,14 @@
     const q=reference[current];if(!q)return;
     const choices=optionsFor(q);
     if(current===3){
-      mainStage(`<div class="photo-form"><h1>${q.title}</h1><div class="photo-form-choices">${choices}</div>${picture('mulher-quiz.webp','quiz-woman','width="203" height="449"')}</div>`,'photo-stage');return;
+      mainStage(`<div class="photo-form"><h1>${q.title}</h1><div class="photo-form-choices">${choices}</div>${picture('foco-mulher-quiz.webp','quiz-woman','width="203" height="449"')}</div>`,'photo-stage');return;
     }
     if(current===10){
       const cards=q.items.map((title,i)=>{const sel=answers[q.key]===String(i);return `<button class="body-card ${sel?'selected':''}" data-single="${q.key}" data-value="${i}">${picture('corpo-atual-'+(i+1)+'.webp','body-card-img','width="148" height="140"')}<span>${title}</span></button>`;}).join('');
       mainStage(`<div class="content-wrap grid-content"><h1>${q.title}</h1><div class="body-grid">${cards}</div></div>`,'body-stage');return;
     }
     if(current===12){
-      mainStage(`<div class="photo-form best-form-layout"><h1>${q.title}</h1><div class="photo-form-choices best-form-choices">${choices}</div>${picture('melhor-fase.webp','quiz-woman best-form-image','width="320" height="478"')}</div>`,'photo-stage best-form-stage');return;
+      mainStage(`<div class="photo-form best-form-layout"><h1>${q.title}</h1><div class="photo-form-choices best-form-choices">${choices}</div>${picture('foco-melhor-fase.webp','quiz-woman best-form-image','width="320" height="478"')}</div>`,'photo-stage best-form-stage');return;
     }
     let selectionControl='';
     if(q.type==='multi'){
@@ -202,7 +205,7 @@
     if(current===22){
       const opts=[['pouca','Bebo pouca água'],['moderada','Bebo uma quantidade moderada'],['boa','Costumo me hidratar bem']];
       const values=opts.map(([value,label])=>`<button type="button" class="choice ${answers.waterIntake===value?'selected':''}" data-single="waterIntake" data-value="${value}" aria-pressed="${answers.waterIntake===value?'true':'false'}"><span>${label}</span><span>›</span></button>`).join('');
-      wrap(`<main class="stage media-stage water-stage"><h1>Como está seu consumo de água?</h1><p class="desc">Pequenos hábitos também podem ajudar seu bem-estar.</p><div class="media-split"><div class="media-options">${values}</div><img class="media-figure water-figure" src="/pagina/images/water-quiz.webp" alt="" width="1000" height="710" loading="lazy" decoding="async"></div></main>`);
+      wrap(`<main class="stage media-stage water-stage"><h1>Como está seu consumo de água?</h1><p class="desc">Pequenos hábitos também podem ajudar seu bem-estar.</p><div class="media-split"><div class="media-options">${values}</div><img class="media-figure water-figure" src="/pagina/images/foco-water-quiz.webp" alt="" width="1000" height="710" loading="lazy" decoding="async"></div></main>`);
       return;
     }
     if(current===23){
@@ -278,17 +281,40 @@
   }
   function offer() {
     prepareVTurb();
+    // O tempo começa na primeira entrada da oferta e permanece nesta aba caso recarregue.
+    let startedAt;
+    try { startedAt=Number(sessionStorage.getItem(OFFER_START_KEY)); } catch (_) {}
+    if (!Number.isFinite(startedAt) || startedAt <= 0 || startedAt > Date.now()) {
+      startedAt=Date.now();
+      try { sessionStorage.setItem(OFFER_START_KEY,String(startedAt)); } catch (_) {}
+    }
     const href=escapeHTML(checkoutHref());
-    wrap(`<main class="stage"><h1>Seu Programa de <span class="hl">Calistenia Asiática em Casa</span> está pronto</h1><p class="desc">Conheça o programa e veja como começar com exercícios progressivos sem sair de casa.</p><div class="video-wrap"><vturb-smartplayer id="vid-6af495416685e101a472e87e" style="display:block;margin:0 auto;width:100%;max-width:400px"><div class="vturb-player-placeholder" style="position:relative;width:100%;padding:178.21782178217822% 0 0;z-index:0;background-color:black"></div></vturb-smartplayer></div><div class="offer-price"><small>Pagamento único</small><div>R$ 37,90</div></div><p class="offer-price-caption">Acesso ao programa de 21 dias</p><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">QUERO COMEÇAR AGORA ›</a><p class="trust">🔒 Checkout seguro na Wiapy • Compra pela plataforma de pagamento</p><section class="panel"><h2>O que está incluído</h2><ul class="list-check"><li>Programa de calistenia para treinar em casa</li><li>Sequência progressiva para 21 dias</li><li>Orientações para iniciar no seu ritmo</li><li>Exercícios com foco em força e mobilidade</li></ul></section><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">GARANTIR MEU ACESSO — R$ 37,90 ›</a><p class="tiny">Resultados individuais variam. Respeite seus limites físicos e consulte um profissional de saúde se necessário.</p></main>`,'offer');
+    // A área de pagamento não existe no HTML inicial: só é inserida após 323 s.
+    wrap(`<main class="stage"><h1>Seu Programa de <span class="hl">Calistenia Asiática em Casa</span> está pronto</h1><p class="desc">Conheça o programa e veja como começar com exercícios progressivos sem sair de casa.</p><div class="video-wrap"><vturb-smartplayer id="vid-6af495416685e101a472e87e" style="display:block;margin:0 auto;width:100%;max-width:400px"><div class="vturb-player-placeholder" style="position:relative;width:100%;padding:178.21782178217822% 0 0;z-index:0;background-color:black"></div></vturb-smartplayer></div><div id="offer-unlock-area" aria-live="polite"></div></main>`,'offer');
     attachVTurb();
+    const revealOffer=()=>{
+      if(current!==35){ if(offerUnlockTimer)clearTimeout(offerUnlockTimer);offerUnlockTimer=null;return; }
+      const slot=root.querySelector('#offer-unlock-area');
+      if(!slot)return;
+      const remaining=OFFER_UNLOCK_MS-(Date.now()-startedAt);
+      if(remaining>0){offerUnlockTimer=setTimeout(revealOffer,Math.min(remaining,1000));return;}
+      offerUnlockTimer=null;
+      if(slot.dataset.unlocked==='true')return;
+      slot.dataset.unlocked='true';
+      slot.innerHTML=`<div class="offer-price"><small>Pagamento único</small><div>R$ 37,90</div></div><p class="offer-price-caption">Acesso ao programa de 21 dias</p><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">QUERO COMEÇAR AGORA ›</a><p class="trust">🔒 Checkout seguro na Wiapy • Compra pela plataforma de pagamento</p><section class="panel"><h2>O que está incluído</h2><ul class="list-check"><li>Programa de calistenia para treinar em casa</li><li>Sequência progressiva para 21 dias</li><li>Orientações para iniciar no seu ritmo</li><li>Exercícios com foco em força e mobilidade</li></ul></section><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">GARANTIR MEU ACESSO — R$ 37,90 ›</a><p class="tiny">Resultados individuais variam. Respeite seus limites físicos e consulte um profissional de saúde se necessário.</p>`;
+    };
+    revealOffer();
   }
   function render() {
-    document.title=current===35?'Calistenia Asiática em Casa — Acesso | Atlas':'Calistenia Asiática em Casa — 21 Dias | Atlas';
+    document.title='calisteniasiatica';
+    if(current!==35 && offerUnlockTimer){clearTimeout(offerUnlockTimer);offerUnlockTimer=null;}
     if(current===1){if(!root.querySelector('[data-boot-intro]'))intro();} else if(current===35)offer(); else if(current<=19)renderReference(); else renderQuestion(questions[current]);
     window.scrollTo({top:0,behavior:'instant'});
   }
   function goTo(next,replace=false) {
+    const previousStep=current;
     current=Math.min(35,Math.max(1,next));
+    if(current===35 && previousStep!==35){try{sessionStorage.removeItem(OFFER_START_KEY);}catch(_){}}
     const url=current===1?'/pagina/':'/pagina/step-'+current;
     const params=location.search;
     if(replace)history.replaceState({step:current},'',url+params); else history.pushState({step:current},'',url+params);

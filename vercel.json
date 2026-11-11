@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/pagina/step-:step",
+      "destination": "/pagina/index.html"
+    },
+    {
+      "source": "/pagina",
+      "destination": "/pagina/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/pagina/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
+      ]
+    },
+    {
+      "source": "/pagina/js/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    }
+  ]
+}

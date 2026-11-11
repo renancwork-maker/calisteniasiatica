@@ -1,0 +1,30 @@
+CALISTENIA ASIÁTICA EM CASA — 21 DIAS | ATLAS
+Pacote estático para publicação
+
+INTEGRAÇÕES CONFIGURADAS
+- UTMIFY: novo pixel de compra e novo script de UTMs executados no início do <head>, antes do conteúdo visual.
+- VTURB: novo vídeo id vid-6af495416685e101a472e87e, com player v4, preloads e DNS prefetch ativados SOMENTE na etapa final de oferta para não prejudicar as etapas de entrada.
+- WIAPY: todos os botões de pagamento da oferta apontam exclusivamente para https://pay.wiapy.com/e6WX0PxZmlLo.
+- UTMs: parâmetros de campanhas e identificação mantidos ao percorrer o questionário e anexados ao checkout.
+- Foram retirados códigos antigos de pixel, Clarity e rastreamento capturados pelo downloader.
+
+DESEMPENHO
+- HTML e CSS críticos em um único arquivo de entrada; não há dependência de React nem de fontes externas.
+- JavaScript do questionário com cerca de 20 KB, deferido.
+- Imagem principal em WebP redimensionada e servida com srcset.
+- VSL carregada apenas ao chegar na oferta; a reprodução depende da plataforma VTURB.
+- Regras de roteamento SPA incluídas para Netlify (_redirects) e Vercel (vercel.json).
+
+IMPORTANTE SOBRE O ARQUIVO DE ORIGEM
+O ZIP enviado não continha o módulo JavaScript index-DY-XmoHe.js necessário para carregar as etapas 2 a 35, além das imagens vinculadas a esse módulo. Dessa forma, o questionário ORIGINAL não podia funcionar depois da primeira etapa. Para fornecer um pacote navegável e publicar a oferta, essas etapas foram RECONSTRUÍDAS com textos e opções compatíveis com a proposta, mas não são cópias exatas do site publicado. A aparência da primeira página foi preservada tanto quanto possível. Para uma reprodução idêntica, será preciso obter o código-fonte original completo ou uma exportação com todos os assets.
+
+COMO PUBLICAR
+- Vercel: importe o conteúdo deste ZIP como site estático (sem configuração de build). Mantenha o vercel.json na raiz.
+- Netlify: publique a pasta inteira ou arraste o ZIP para Deploys. Mantenha o _redirects na raiz.
+- Verifique a etapa /step-35 e o fluxo completo após publicar.
+- Confirme dentro da Wiapy e da UTMIFY se as compras e os parâmetros UTMs estão sendo registrados. A integração do pixel foi inserida, mas conversões reais dependem da configuração dos serviços e da implementação da confirmação de pagamento.
+- O player VTurb deve ser validado no domínio de produção; redes locais sem acesso externo podem deixar apenas um espaço reservado para o vídeo.
+
+CHECKOUT UNICO: https://pay.wiapy.com/e6WX0PxZmlLo
+ID VTURB: vid-6af495416685e101a472e87e
+DATA DA ATUALIZAÇÃO: 11/11/2026

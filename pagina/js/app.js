@@ -21,6 +21,7 @@
     return result ? Math.max(1,Math.min(35,Number(result[1]))) : 1;
   };
   let current = getStep();
+  let showQuizLead = current === 1;
   let answers = {};
   if (current === 1) { try { sessionStorage.removeItem(STORAGE_KEY); } catch (_err) {} }
   try { answers = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch (_err) { answers = {}; }
@@ -183,6 +184,9 @@
   }
   function header(back=true) {return hdr(back);}
   function wrap(markup,cssClass='') { root.innerHTML=`<div class="page ${cssClass} slide-in">${header(current>1)}${markup}</div>`; }
+  function introSplash() {
+    root.innerHTML=`<div class="page" data-boot-quiz-lead><header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">por Fernanda Martins</span></header><main class="quiz-lead-stage"><div class="quiz-lead-box"><h1>Calistenia Asiática: <span>a nova onda dos exercícios em casa!</span></h1><p>Conheça o programa de 21 dias, com exercícios de força e mobilidade que podem ser adaptados ao seu ritmo.</p><p>Os resultados variam de pessoa para pessoa. Responda às perguntas para conhecer a proposta.</p><button class="quiz-lead-button" type="button" data-begin-quiz>COMEÇAR O QUIZ</button></div></main></div>`;
+  }
   function intro() {
     root.innerHTML=`<div class="page slide-in" data-boot-intro><header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">por Fernanda Martins</span></header><main class="main"><div class="title"><h1>Programa de Calistenia Asiática <span class="hl">para Mulheres</span></h1><p class="badge">QUIZ DE CALISTENIA</p><p class="question-age">Quantos anos você tem?</p></div><div class="btns">${['39 – 45','46 – 50','51 – 60','60+'].map(a=>`<button type="button" class="btn" data-age="${a}"><span>${a}</span><span class="arrow">➜</span></button>`).join('')}</div><img class="hero-img" src="/pagina/images/asian-woman-fitness.webp" srcset="/pagina/images/asian-woman-fitness-520.webp 520w,/pagina/images/asian-woman-fitness.webp 760w" sizes="(max-width: 768px) 230px,440px" alt="Mulher asiática praticando calistenia" width="650" height="1000" decoding="async" fetchpriority="high"><footer class="ftr">Ao escolher sua idade, concorda com nossos <a href="#">Termos de Serviço</a> e reconhece nossa <a href="#">Política de Privacidade</a> e <a href="#">Política de Cookies</a></footer></main></div>`;
   }
@@ -308,12 +312,16 @@
   function render() {
     document.title='calisteniasiatica';
     if(current!==35 && offerUnlockTimer){clearTimeout(offerUnlockTimer);offerUnlockTimer=null;}
-    if(current===1){if(!root.querySelector('[data-boot-intro]'))intro();} else if(current===35)offer(); else if(current<=19)renderReference(); else renderQuestion(questions[current]);
+    if(current===1){
+      if(showQuizLead){if(!root.querySelector('[data-boot-quiz-lead]'))introSplash();}
+      else if(!root.querySelector('[data-boot-intro]'))intro();
+    } else if(current===35)offer(); else if(current<=19)renderReference(); else renderQuestion(questions[current]);
     window.scrollTo({top:0,behavior:'instant'});
   }
   function goTo(next,replace=false) {
     const previousStep=current;
     current=Math.min(35,Math.max(1,next));
+    if(current===1 && previousStep!==1)showQuizLead=false;
     if(current===35 && previousStep!==35){try{sessionStorage.removeItem(OFFER_START_KEY);}catch(_){}}
     const url=current===1?'/pagina/':'/pagina/step-'+current;
     const params=location.search;
@@ -323,6 +331,7 @@
   root.addEventListener('click',event=>{
     const button=event.target.closest('button');
     if(!button)return;
+    if(button.hasAttribute('data-begin-quiz')){showQuizLead=false;intro();return;}
     if(button.hasAttribute('data-unit')){
       const key=button.getAttribute('data-for'),u=button.getAttribute('data-unit');
       answers[key+'_unit']=u;remember();renderSlider();return;

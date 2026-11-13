@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="dns-prefetch" href="//cdn.utmify.com.br">
 <link rel="preconnect" href="https://cdn.utmify.com.br" crossorigin>
-<link rel="preload" href="/pagina/images/asian-woman-fitness.webp" imagesrcset="/pagina/images/asian-woman-fitness-520.webp 520w, /pagina/images/asian-woman-fitness.webp 760w" imagesizes="(max-width:768px) 320px,620px" as="image" type="image/webp" fetchpriority="high">
+<!-- A imagem do quiz carrega somente quando o usuário inicia as perguntas. -->
 <style>/* CALISTENIA — FERNANDA MARTINS • critical CSS inline for fast first paint */
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#fafafa;color:#242125;font-family:Arial,Helvetica,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,a{font:inherit}button{cursor:pointer}a{color:inherit}
 .hdr,.site-header{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;background:#fff;min-height:55px}.hdr-logo,.brand{font-family:Impact,'Arial Narrow',sans-serif;font-size:30px;letter-spacing:.06em;color:#d64d7a;line-height:1}.hdr-badge,.by{font-size:12px;background:#f5f5f5;border-radius:4px;color:#666;padding:4px 7px}.main,.intro-main{display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;min-height:calc(100svh - 55px);padding:18px 16px}.title,.intro-heading{text-align:center;max-width:630px;margin:16px auto 0}.title h1,.intro-heading h1{font-size:clamp(24px,4vw,32px);line-height:1.18;letter-spacing:-.03em;font-weight:800;margin:0}.hl{color:#d64d7a}.title .sub,.intro-heading .sub{color:#666;font-size:16px;margin:12px 0 0}.title .badge,.intro-heading .eyebrow{font-size:12px;font-weight:800;letter-spacing:.1em;color:#454047;margin:12px 0 0;text-transform:uppercase}.btns,.age-options{display:flex;flex-direction:column;gap:12px;margin-top:24px;width:70%;max-width:300px;position:relative;z-index:2}.btn,.age-btn{width:100%;min-height:58px;background:#f5f5f5;border:0;border-radius:12px;padding:15px 18px;text-align:left;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:space-between;color:#222;transition:background .15s,transform .15s}.btn:hover,.age-btn:hover{background:#ebebeb;transform:translateY(-1px)}.arrow{font-size:22px;color:#999}.hero-img{position:absolute;right:-120px;top:80px;width:380px;height:500px;pointer-events:none;z-index:0;object-fit:contain}.ftr,.footnote{padding:20px 12px;text-align:center;color:#747079;font-size:11px;line-height:1.65;margin:auto auto 0;max-width:700px;z-index:2;position:relative}.ftr a,.footnote a{text-decoration:underline}
@@ -89,18 +89,29 @@ html{overflow-x:hidden}body{overflow-x:hidden;font-family:Arial,Helvetica,system
 .hdr-badge,.by{white-space:nowrap;font-size:10px;padding:3px 6px}
 .site-header,.hdr{flex-wrap:nowrap;gap:6px}
 @media(max-width:380px){.hdr-badge,.by{font-size:9px}.hdr-logo,.brand{font-size:25px}}
+
+/* Tela inicial de apresentação do quiz, sem prova social não verificada. */
+.quiz-lead-stage{min-height:calc(100svh - 56px);display:flex;align-items:center;justify-content:center;padding:26px 22px 48px;background:#fafafa}
+.quiz-lead-box{width:100%;max-width:435px;text-align:center}
+.quiz-lead-box h1{font-size:clamp(29px,7.8vw,38px);line-height:1.17;color:#242a34;letter-spacing:-.035em;margin:0 0 21px}
+.quiz-lead-box h1 span{color:#d8487d}
+.quiz-lead-box p{font-size:16px;line-height:1.55;color:#657080;margin:0 auto 14px;max-width:390px}
+.quiz-lead-button{border:0;min-height:60px;width:100%;max-width:360px;border-radius:14px;background:#d8487d;color:#fff;font-size:16px;font-weight:850;margin:20px auto 0;cursor:pointer}
+.quiz-lead-button:focus-visible{outline:3px solid #853555;outline-offset:3px}
 </style>
 <script defer src="/pagina/js/app.js"></script>
 </head>
 <body>
 <div id="root">
-<div class="page" data-boot-intro>
+<div class="page" data-boot-quiz-lead>
   <header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">por Fernanda Martins</span></header>
-  <main class="main">
-    <div class="title"><h1>Programa de Calistenia Asiática <span class="hl">para Mulheres</span></h1><p class="badge">QUIZ DE CALISTENIA</p><p class="question-age">Quantos anos você tem?</p></div>
-    <div class="btns"><button class="btn" type="button" data-age="39 – 45"><span>39 – 45</span><span class="arrow">➜</span></button><button class="btn" type="button" data-age="46 – 50"><span>46 – 50</span><span class="arrow">➜</span></button><button class="btn" type="button" data-age="51 – 60"><span>51 – 60</span><span class="arrow">➜</span></button><button class="btn" type="button" data-age="60+"><span>60+</span><span class="arrow">➜</span></button></div>
-    <img class="hero-img" src="/pagina/images/asian-woman-fitness.webp" srcset="/pagina/images/asian-woman-fitness-520.webp 520w,/pagina/images/asian-woman-fitness.webp 760w" sizes="(max-width:768px) 320px,620px" width="650" height="1000" alt="" decoding="async" fetchpriority="high">
-    <footer class="ftr">Ao escolher sua idade e continuar, concorda com nossos <a href="#">Termos de Serviço</a> e reconhece nossa <a href="#">Política de Privacidade</a> e <a href="#">Política de Cookies</a></footer>
+  <main class="quiz-lead-stage">
+    <div class="quiz-lead-box">
+      <h1>Calistenia Asiática: <span>a nova onda dos exercícios em casa!</span></h1>
+      <p>Conheça o programa de 21 dias, com exercícios de força e mobilidade que podem ser adaptados ao seu ritmo.</p>
+      <p>Os resultados variam de pessoa para pessoa. Responda às perguntas para conhecer a proposta.</p>
+      <button class="quiz-lead-button" type="button" data-begin-quiz>COMEÇAR O QUIZ</button>
+    </div>
   </main>
 </div>
 </div>

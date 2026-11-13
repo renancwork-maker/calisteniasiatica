@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/step-:step",
-      "destination": "/index.html"
-    }
-  ]
-}

@@ -1,4 +1,4 @@
-/* Atlas • Calistenia Asiática em Casa — navegação leve sem bibliotecas pesadas.
+/* Fernanda Martins • Calistenia Asiática em Casa — navegação leve sem bibliotecas pesadas.
    O pacote original não continha o módulo de etapas; perguntas reconstruídas para um fluxo funcional.
    Checkout único: WIAPY. Vídeo único: VTurb informado pelo proprietário. */
 (function () {
@@ -74,10 +74,10 @@
     28:page('Imagine uma rotina de movimento que cabe no seu dia','Comece pelo básico, observe o que seu corpo permite e avance pouco a pouco ao longo dos 21 dias.'),
     29:page('Estamos organizando suas respostas','Seu resumo está quase pronto. Vamos reunir os principais pontos que você selecionou.'),
     30:page('Sua evolução é individual','O progresso pode acontecer de várias formas: mais regularidade, força, mobilidade e disposição. Resultados variam conforme a pessoa.'),
-    31:page('Seu perfil está pronto!','Com suas respostas, você já tem um ponto de partida para organizar uma rotina de calistenia em casa.'),
+    31:page('Suas respostas estão organizadas!','Suas escolhas ajudam você a reconhecer objetivos e hábitos antes de conhecer o programa completo de exercícios em casa.'),
     32:opt('motivationReal','O que mais te motiva a começar?','Escolha o motivo que mais combina com você.',[['saude','Priorizar meu bem-estar'],['energia','Ter mais disposição'],['forca','Sentir meu corpo mais forte'],['rotina','Ter um momento para mim']]),
     33:opt('commitmentLevel','Quando você gostaria de começar?','O primeiro passo é escolher um momento que caiba na sua rotina.',[['hoje','Hoje'],['amanha','Amanhã'],['semana','Nesta semana']]),
-    34:page('Sua jornada de 21 dias está definida','Você já escolheu seus objetivos e o melhor momento para iniciar. Na próxima tela, conheça o programa completo e veja como ter acesso.')
+    34:page('Seu próximo passo é conhecer o programa','Agora você pode conhecer o que está incluído no programa de 21 dias e decidir se deseja ter acesso ao conteúdo completo.')
   };
   // Recriação mobile-first das telas fornecidas pelo proprietário em sequência.
   const A='/pagina/images/';
@@ -94,7 +94,7 @@
     13:{key:'limitations',type:'multi',title:'Você tem dificuldades com algum dos seguintes itens?',subtitle:'Por favor, selecione todas as opções aplicáveis',items:['Costas sensíveis','Joelhos sensíveis','Quadril sensível','Ombros e braços','Panturrilhas e tornozelos','Nenhuma das opções acima']},
     14:{key:'comfortLevel',type:'single',title:'Você se sente confortável ao se exercitar?',items:['Sinto dor/Desconforto','Sinto alguma dificuldade','Sinto-me confortável'],symbols:['😣','😳','😊']}
   };
-  function hdr(back=true){return `<div class="page-top"><header class="site-header">${back?'<button type="button" class="back" data-back aria-label="Voltar">‹</button>':''}<span class="brand">CALISTENIA</span><span class="by">by Atlas</span></header>${back?`<div class="progress"><i style="width:${Math.round(current/35*100)}%"></i></div>`:''}</div>`;}
+  function hdr(back=true){return `<div class="page-top"><header class="site-header">${back?'<button type="button" class="back" data-back aria-label="Voltar">‹</button>':''}<span class="brand">CALISTENIA</span><span class="by">por Fernanda Martins</span></header>${back?`<div class="progress"><i style="width:${Math.round(current/35*100)}%"></i></div>`:''}</div>`;}
   function shell(markup,cls=''){root.innerHTML=`<div class="page ${cls}">${hdr(current>1)}${markup}</div>`;}
   function mainStage(inner,cls='',bottom=''){shell(`<main class="reference-stage ${cls}">${inner}${bottom?`<div class="bottom-action">${bottom}</div>`:''}</main>`,'reference-page');}
   const continueButton=(text='Continuar')=>`<button class="primary" type="button" data-next>${text}</button>`;
@@ -118,14 +118,14 @@
   }
   function renderReference(){
     if(current===2){
-      mainStage(`${picture('grupo-mulheres.webp','group-image','width="348" height="260" fetchpriority="high"')}<div class="group-message"><h1>Elas conseguiram e você também pode</h1><p>Milhares de mulheres já começaram a se movimentar com a Calistenia Asiática.</p></div>`,'group-stage',continueButton('Continuar'));
+      mainStage(`${picture('grupo-mulheres.webp','group-image','width="348" height="260" fetchpriority="high"')}<div class="group-message"><h1>Uma jornada de movimento no seu ritmo</h1><p>Conheça uma proposta de exercícios em casa, organizada para quem quer começar ou retomar uma rotina de movimentos.</p></div>`,'group-stage',continueButton('Continuar'));
       return;
     }
     if(current===4){
-      illustrationStep('exercicio-sofa.webp','Você já tem a base, mas a Calistenia Asiática é diferente da calistenia comum.','Enquanto o método tradicional foca apenas em força externa, nossa técnica combina movimentos controlados e progressivos, respeitando sua capacidade física.','landscape-info','CONTINUAR');return;
+      illustrationStep('exercicio-sofa.webp','Descubra movimentos simples para incluir na sua rotina.','A proposta reúne movimentos de força e mobilidade para fazer em casa, com adaptações conforme seu nível e suas possibilidades.','landscape-info','CONTINUAR');return;
     }
     if(current===9){
-      illustrationStep('mulher-7-minutos.webp','Apenas 7 minutos por dia — uma forma simples de incluir movimento na sua rotina!','O programa apresenta exercícios de calistenia adaptáveis para fazer em casa, com orientação para respeitar seu ritmo e ganhar constância.','short-info','Continuar');return;
+      illustrationStep('mulher-7-minutos.webp','Movimentos para encaixar na sua rotina, sem sair de casa!','Conheça exercícios de calistenia em casa com orientações para adaptar os movimentos ao seu nível. O tempo de cada sessão pode variar conforme a atividade.','short-info','Continuar');return;
     }
     if(current===15){
       illustrationStep('mulher-positivo.webp','Nós cuidamos de você!','Adaptamos seu programa com alternativas para promover movimentos seguros e suaves. Caso sinta dor, respeite seus limites e procure orientação profissional.','short-info','Continuar');return;
@@ -184,7 +184,7 @@
   function header(back=true) {return hdr(back);}
   function wrap(markup,cssClass='') { root.innerHTML=`<div class="page ${cssClass} slide-in">${header(current>1)}${markup}</div>`; }
   function intro() {
-    root.innerHTML=`<div class="page slide-in" data-boot-intro><header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">by Atlas</span></header><main class="main"><div class="title"><h1>Programa de Calistenia Asiática <span class="hl">para Mulheres</span></h1><p class="badge">TESTE DE 1 MINUTO</p><p class="question-age">Quantos anos você tem?</p></div><div class="btns">${['39 – 45','46 – 50','51 – 60','60+'].map(a=>`<button type="button" class="btn" data-age="${a}"><span>${a}</span><span class="arrow">➜</span></button>`).join('')}</div><img class="hero-img" src="/pagina/images/asian-woman-fitness.webp" srcset="/pagina/images/asian-woman-fitness-520.webp 520w,/pagina/images/asian-woman-fitness.webp 760w" sizes="(max-width: 768px) 230px,440px" alt="Mulher asiática praticando calistenia" width="650" height="1000" decoding="async" fetchpriority="high"><footer class="ftr">Ao escolher sua idade, concorda com nossos <a href="#">Termos de Serviço</a> e reconhece nossa <a href="#">Política de Privacidade</a> e <a href="#">Política de Cookies</a></footer></main></div>`;
+    root.innerHTML=`<div class="page slide-in" data-boot-intro><header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">por Fernanda Martins</span></header><main class="main"><div class="title"><h1>Programa de Calistenia Asiática <span class="hl">para Mulheres</span></h1><p class="badge">QUIZ DE CALISTENIA</p><p class="question-age">Quantos anos você tem?</p></div><div class="btns">${['39 – 45','46 – 50','51 – 60','60+'].map(a=>`<button type="button" class="btn" data-age="${a}"><span>${a}</span><span class="arrow">➜</span></button>`).join('')}</div><img class="hero-img" src="/pagina/images/asian-woman-fitness.webp" srcset="/pagina/images/asian-woman-fitness-520.webp 520w,/pagina/images/asian-woman-fitness.webp 760w" sizes="(max-width: 768px) 230px,440px" alt="Mulher asiática praticando calistenia" width="650" height="1000" decoding="async" fetchpriority="high"><footer class="ftr">Ao escolher sua idade, concorda com nossos <a href="#">Termos de Serviço</a> e reconhece nossa <a href="#">Política de Privacidade</a> e <a href="#">Política de Cookies</a></footer></main></div>`;
   }
   function screenText(title,desc,content) {
     wrap(`<main class="stage"><h1>${escapeHTML(title)}</h1><p class="desc">${escapeHTML(desc)}</p>${content}</main>`);
@@ -290,7 +290,7 @@
     }
     const href=escapeHTML(checkoutHref());
     // A área de pagamento não existe no HTML inicial: só é inserida após 323 s.
-    wrap(`<main class="stage"><h1>Seu Programa de <span class="hl">Calistenia Asiática em Casa</span> está pronto</h1><p class="desc">Conheça o programa e veja como começar com exercícios progressivos sem sair de casa.</p><div class="video-wrap"><vturb-smartplayer id="vid-6af495416685e101a472e87e" style="display:block;margin:0 auto;width:100%;max-width:400px"><div class="vturb-player-placeholder" style="position:relative;width:100%;padding:178.21782178217822% 0 0;z-index:0;background-color:black"></div></vturb-smartplayer></div><div id="offer-unlock-area" aria-live="polite"></div></main>`,'offer');
+    wrap(`<main class="stage"><h1>Conheça o <span class="hl">Programa de Calistenia Asiática em Casa</span></h1><p class="desc">Você respondeu ao quiz. Veja o que o programa de 21 dias oferece e como acompanhar os exercícios em casa pelo celular.</p><div class="video-wrap"><vturb-smartplayer id="vid-6af495416685e101a472e87e" style="display:block;margin:0 auto;width:100%;max-width:400px"><div class="vturb-player-placeholder" style="position:relative;width:100%;padding:178.21782178217822% 0 0;z-index:0;background-color:black"></div></vturb-smartplayer></div><div id="offer-unlock-area" aria-live="polite"></div></main>`,'offer');
     attachVTurb();
     const revealOffer=()=>{
       if(current!==35){ if(offerUnlockTimer)clearTimeout(offerUnlockTimer);offerUnlockTimer=null;return; }
@@ -301,7 +301,7 @@
       offerUnlockTimer=null;
       if(slot.dataset.unlocked==='true')return;
       slot.dataset.unlocked='true';
-      slot.innerHTML=`<div class="offer-price"><small>Pagamento único</small><div>R$ 37,90</div></div><p class="offer-price-caption">Acesso ao programa de 21 dias</p><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">QUERO COMEÇAR AGORA ›</a><p class="trust">🔒 Checkout seguro na Wiapy • Compra pela plataforma de pagamento</p><section class="panel"><h2>O que está incluído</h2><ul class="list-check"><li>Programa de calistenia para treinar em casa</li><li>Sequência progressiva para 21 dias</li><li>Orientações para iniciar no seu ritmo</li><li>Exercícios com foco em força e mobilidade</li></ul></section><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">GARANTIR MEU ACESSO — R$ 37,90 ›</a><p class="tiny">Resultados individuais variam. Respeite seus limites físicos e consulte um profissional de saúde se necessário.</p>`;
+      slot.innerHTML=`<div class="offer-price"><small>Pagamento único</small><div>R$ 37,90</div></div><p class="offer-price-caption">Acesso ao programa de 21 dias</p><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">QUERO COMEÇAR AGORA ›</a><p class="trust">🔒 Checkout seguro na Wiapy • Compra pela plataforma de pagamento</p><section class="panel"><h2>O que está incluído</h2><ul class="list-check"><li>Exercícios orientados para fazer em casa</li><li>Sequência progressiva para 21 dias</li><li>Orientações para iniciar no seu ritmo</li><li>Exercícios com foco em força e mobilidade</li></ul></section><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">GARANTIR MEU ACESSO — R$ 37,90 ›</a><p class="tiny">Resultados individuais variam. Respeite seus limites físicos e consulte um profissional de saúde se necessário.</p>`;
     };
     revealOffer();
   }

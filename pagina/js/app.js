@@ -290,7 +290,6 @@
   }
   function offer() {
     prepareVTurb();
-    // O tempo começa na primeira entrada da oferta e permanece nesta aba caso recarregue.
     let startedAt;
     try { startedAt=Number(sessionStorage.getItem(OFFER_START_KEY)); } catch (_) {}
     if (!Number.isFinite(startedAt) || startedAt <= 0 || startedAt > Date.now()) {
@@ -298,19 +297,72 @@
       try { sessionStorage.setItem(OFFER_START_KEY,String(startedAt)); } catch (_) {}
     }
     const href=escapeHTML(checkoutHref());
-    // A área de pagamento não existe no HTML inicial: só é inserida após 323 s.
-    wrap(`<main class="stage"><h1>Conheça o <span class="hl">Programa de Calistenia Asiática em Casa</span></h1><p class="desc">Você respondeu ao quiz. Veja o que o programa de 21 dias oferece e como acompanhar os exercícios em casa pelo celular.</p><div class="video-wrap"><vturb-smartplayer id="vid-6afba5f7d4334aee81183338" style="display:block;margin:0 auto;width:100%;max-width:400px"><div class="vturb-player-placeholder" style="position:relative;width:100%;padding:178.21782178217822% 0 0;z-index:0;background-color:black"></div></vturb-smartplayer></div><div id="offer-unlock-area" aria-live="polite"></div></main>`,'offer');
+    const offerFeatures=[
+      ['Plano de Calistenia Asiática em Casa','Uma sequência de exercícios organizada para acompanhar no celular.'],
+      ['Exercícios progressivos','Atividades de força e mobilidade para adaptar ao seu nível.'],
+      ['Programa de 21 dias','Uma estrutura diária para ajudar a organizar a prática.'],
+      ['Orientações para começar','Informações para seguir seu ritmo e respeitar limites.'],
+      ['Mobilidade e condicionamento','Movimentos para diferentes partes do corpo.'],
+      ['Acesso pelo aplicativo','Confira as atividades de maneira prática pelo celular.']
+    ];
+    const buy = (text='OBTER MEU PROGRAMA AGORA')=>`<a class="offer-blue-buy" href="${href}" data-checkout rel="noopener noreferrer">${text} →</a>`;
+    const payCard=()=>`<section class="offer-blue-price" aria-label="Condição de compra"><p class="offer-blue-price-note">Acesso ao programa</p><div class="offer-blue-price-number"><small>por</small> R$ 37,90</div><p>Pagamento único • acesso ao programa de 21 dias</p><p class="offer-blue-safe">🔒 Pagamento processado pela Mivvo</p></section>`;
+    const unlockArea=()=>`<div class="offer-gated" data-gated-cta hidden>${buy()}</div>`;
+    wrap(`<main class="offer-blue-page">
+      <div class="offer-blue-top"><span>CALISTENIA <small>by Atlas</small></span></div>
+      <div class="offer-blue-body">
+        <h1>Seu plano de <strong>Calistenia Asiática</strong> está <em>pronto!</em></h1>
+        <p class="offer-blue-sub">Assista ao vídeo abaixo e veja como funciona o programa.</p>
+        <div class="offer-video-wrap"><vturb-smartplayer id="vid-6afba5f7d4334aee81183338" style="display:block;margin:0 auto;width:100%;max-width:400px"><div class="vturb-player-placeholder" style="position:relative;width:100%;padding:178.21782178217822% 0 0;z-index:0;background-color:black"></div></vturb-smartplayer></div>
+        ${unlockArea()}
+        <section class="offer-blue-section"><h2>O que você vai receber</h2><div class="offer-blue-feature-list">${offerFeatures.map(([title,desc])=>`<div class="offer-blue-feature"><span>✓</span><p><strong>${title}:</strong> ${desc}</p></div>`).join('')}</div></section>
+        <section class="offer-blue-app"><h2>Aplicativo fácil de usar e feito <em>para iniciantes!</em></h2><img src="/pagina/images/male-app.webp" alt="Demonstração visual de exercícios no aplicativo" width="600" height="450" loading="lazy" decoding="async"><p>Consulte os exercícios e acompanhe a sequência do programa diretamente pelo celular.</p></section>
+        <section class="offer-purchase-section">${payCard()}${unlockArea()}</section>
+        <section class="offer-blue-section"><h2>Conheça melhor o programa</h2><img class="offer-blue-wide-photo" src="/pagina/images/male-exercise.webp" alt="Exercício de calistenia demonstrado por um homem" width="600" height="400" loading="lazy" decoding="async"><p class="offer-blue-copy">Movimentos de força, mobilidade e condicionamento que você pode experimentar em casa. A intensidade varia conforme a sua experiência e condição física.</p></section>
+        <section class="offer-blue-section offer-blue-feedback"><h2>Experiências de participantes</h2><p>Aqui você pode apresentar avaliações autênticas, autorizadas e verificáveis de quem utilizou o seu programa. Nenhum depoimento ou resultado individual foi inventado nesta versão.</p></section>
+        <section class="offer-blue-section offer-extra-bonuses" aria-label="Materiais complementares">
+          <h2>🎁 + BÔNUS <em>EXCLUSIVOS</em></h2>
+          <p class="offer-blue-copy">Conheça os materiais complementares relacionados à sua rotina. Confira a disponibilidade de cada item na descrição da compra.</p>
+          <div class="offer-bonus-stack">
+            <article class="offer-bonus-item"><span class="offer-bonus-num">1</span><span class="offer-bonus-icon" aria-hidden="true">☾</span><div><strong>ROTINA NOTURNA DE RELAXAMENTO</strong><p>Ideias de alongamentos suaves e preparação para um descanso mais tranquilo.</p></div></article>
+            <article class="offer-bonus-item"><span class="offer-bonus-num">2</span><span class="offer-bonus-icon" aria-hidden="true">🥗</span><div><strong>GUIA DE REFEIÇÕES PRÁTICAS</strong><p>Sugestões simples para organizar refeições e cuidar dos hábitos alimentares.</p></div></article>
+            <article class="offer-bonus-item"><span class="offer-bonus-num">3</span><span class="offer-bonus-icon" aria-hidden="true">⚡</span><div><strong>GUIA DE CONSTÂNCIA</strong><p>Dicas para manter a motivação e encaixar exercícios na rotina.</p></div></article>
+            <article class="offer-bonus-item"><span class="offer-bonus-num">4</span><span class="offer-bonus-icon" aria-hidden="true">🎧</span><div><strong>ORIENTAÇÕES E SUPORTE</strong><p>Consulte os canais de atendimento e as condições de suporte disponíveis após a compra.</p></div></article>
+          </div>
+        </section>
+        <section class="offer-guarantee" aria-label="Informações sobre garantia">
+          <div class="offer-guarantee-mark" aria-hidden="true">✓</div>
+          <h2>Garantia de <em>30 dias</em></h2>
+          <p>Confira no checkout as condições de reembolso e garantia aplicáveis ao seu pedido antes de finalizar a compra.</p>
+        </section>
+        <section class="offer-blue-section offer-week-plan" aria-label="Como funciona o programa">
+          <h2>O que esperar nas próximas <em>3 semanas</em></h2>
+          <div class="offer-weeks">
+            <div><b>1</b><p><strong>Semana 1 — Primeiros movimentos:</strong> familiarize-se com os exercícios e com as adaptações para o seu ritmo.</p></div>
+            <div><b>2</b><p><strong>Semana 2 — Desenvolvimento da rotina:</strong> acompanhe as atividades de força e mobilidade e observe seu conforto.</p></div>
+            <div><b>3</b><p><strong>Semana 3 — Continuidade:</strong> consolide o hábito, ajuste a intensidade e avalie sua experiência.</p></div>
+          </div>
+        </section>
+        <section class="offer-blue-section offer-faq" aria-label="Perguntas frequentes">
+          <h2>Perguntas<br>Frequentes</h2>
+          <details open><summary><span>🟢</span> Eu nunca fiz Calistenia, é para iniciantes?</summary><p>Sim. O programa apresenta uma sequência inicial com orientações e opções para adaptar os movimentos ao seu nível.</p></details>
+          <details><summary><span>🟢</span> Quanto tempo preciso dedicar aos exercícios?</summary><p>O tempo varia conforme a aula e seu ritmo. Consulte a duração de cada atividade no aplicativo e respeite seus limites.</p></details>
+          <details><summary><span>🟢</span> Preciso de algum equipamento?</summary><p>Muitos movimentos usam o peso do corpo e um espaço livre. Algumas atividades podem utilizar apoio estável, conforme as orientações da aula.</p></details>
+          <details><summary><span>🟢</span> Como vou receber as aulas?</summary><p>O acesso é digital. Confira no checkout e no e-mail de confirmação as instruções de acesso correspondentes à sua compra.</p></details>
+          <details><summary><span>🟢</span> E se eu tiver alguma dúvida sobre os exercícios?</summary><p>Consulte as instruções do aplicativo e os canais oficiais de suporte informados após a compra. Se sentir dor, interrompa e procure orientação profissional.</p></details>
+        </section>
+        <section class="offer-purchase-section offer-final-checkout">${payCard()}${unlockArea()}
+          <p class="offer-blue-disclaimer">Pagamento único. Confira preço, formas de pagamento e condições de garantia no checkout Mivvo. Os resultados variam de pessoa para pessoa e o programa não substitui avaliação profissional.</p>
+        </section>
+      </div>
+    </main>`,'offer');
     attachVTurb();
     const revealOffer=()=>{
-      if(current!==35){ if(offerUnlockTimer)clearTimeout(offerUnlockTimer);offerUnlockTimer=null;return; }
-      const slot=root.querySelector('#offer-unlock-area');
-      if(!slot)return;
+      if(current!==35){if(offerUnlockTimer)clearTimeout(offerUnlockTimer);offerUnlockTimer=null;return;}
       const remaining=OFFER_UNLOCK_MS-(Date.now()-startedAt);
       if(remaining>0){offerUnlockTimer=setTimeout(revealOffer,Math.min(remaining,1000));return;}
       offerUnlockTimer=null;
-      if(slot.dataset.unlocked==='true')return;
-      slot.dataset.unlocked='true';
-      slot.innerHTML=`<div class="offer-price"><small>Pagamento único</small><div>R$ 37,90</div></div><p class="offer-price-caption">Acesso ao programa de 21 dias</p><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">QUERO COMEÇAR AGORA ›</a><p class="trust">🔒 Checkout seguro na Mivvo • Compra pela plataforma de pagamento</p><section class="panel"><h2>O que está incluído</h2><ul class="list-check"><li>Exercícios orientados para fazer em casa</li><li>Sequência progressiva para 21 dias</li><li>Orientações para iniciar no seu ritmo</li><li>Exercícios com foco em força e mobilidade</li></ul></section><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">GARANTIR MEU ACESSO — R$ 37,90 ›</a><p class="tiny">Resultados individuais variam. Respeite seus limites físicos e consulte um profissional de saúde se necessário.</p>`;
+      root.querySelectorAll('[data-gated-cta]').forEach(slot=>{slot.hidden=false;});
     };
     revealOffer();
   }
@@ -381,7 +433,27 @@
         page('E como seu peso <em>costuma mudar?</em>',`<div class="ref20-options">${choice('weightPattern','Engordo fácil, mas emagreço devagar','lento')}${choice('weightPattern','Engordo fácil e emagreço fácil','oscilante')}${choice('weightPattern','Tenho dificuldade para ganhar peso ou massa muscular','ganhar')}</div>`,'','ref20-questions');
         break;
       case 18:
-        page('',`<h1 class="ref20-title muted">Seu corpo tem características próprias e seu treino pode respeitar isso.</h1><p class="ref20-statement">Vamos considerar seus objetivos e sua rotina para apresentar uma proposta de exercícios progressivos.</p>${asset('body-selection.webp','ref20-body-comparison','Exemplos ilustrativos de tipos físicos')}`,'','ref20-info ref20-bodyinfo',bottom('Continuar →'));
+        {
+          // A tela ilustrativa acompanha a resposta da etapa 17. Esta associação
+          // é apenas um recurso de personalização do quiz, não um diagnóstico corporal.
+          const profiles={
+            lento:{name:'Endomorfo',image:'body-large.webp',description:'Você relatou que tende a ganhar peso com facilidade e que costuma perdê-lo mais devagar.'},
+            oscilante:{name:'Mesomorfo',image:'body-toned.webp',description:'Você relatou facilidade tanto para ganhar quanto para perder peso.'},
+            ganhar:{name:'Ectomorfo',image:'body-slim.webp',description:'Você relatou dificuldade para ganhar peso ou massa muscular.'}
+          };
+          const key=answers.weightPattern;
+          const profile=profiles[key];
+          if(!profile){
+            page('Vamos conhecer seu <em>ponto de partida</em>',`<p class="ref20-statement">Responda à pergunta sobre mudanças de peso para ver seu perfil ilustrativo.</p>`,'','ref20-info',`<div class="ref20-bottom"><button type="button" class="ref20-cta" data-back>Voltar à pergunta anterior</button></div>`);
+            break;
+          }
+          const order=['ganhar','oscilante','lento'];
+          const cards=order.map(id=>{
+            const item=profiles[id],active=id===key;
+            return `<div class="ref20-type-card ${active?'is-active':'is-muted'}" aria-label="${item.name}${active?' — perfil ilustrativo selecionado':''}">${asset(item.image,'ref20-type-image',item.name)}<span>${item.name}</span></div>`;
+          }).join('');
+          page(`Seu perfil ilustrativo: <em>${profile.name}</em>`,`<p class="ref20-type-description">${profile.description}</p><p class="ref20-type-disclaimer">Essa classificação é apenas ilustrativa. A resposta não determina seu tipo físico nem seus resultados.</p><div class="ref20-type-grid">${cards}</div><p class="ref20-type-caption">Vamos considerar seu ritmo e seus objetivos para apresentar os exercícios.</p>`,'','ref20-info ref20-bodyinfo ref20-type-stage',bottom('Continuar →'));
+        }
         break;
       case 19:
         page('Quando foi a última vez que <em>sentiu orgulho</em> do seu corpo?',`<div class="ref20-split left-pride">${asset('male-fitness.webp','ref20-side-image pride-image','Homem praticante')}<div class="ref20-split-options">${choice('fitnessHistory','Menos de 1 ano atrás','menos1')}${choice('fitnessHistory','1 – 3 anos atrás','1-3')}${choice('fitnessHistory','Mais de 3 anos','mais3')}${choice('fitnessHistory','Nem me lembro','nunca')}</div></div>`,'','ref20-questions');
@@ -391,18 +463,99 @@
     }
   }
 
+  /* Etapas 21–34: reconstrução responsiva a partir dos prints adicionais.
+     Os números de medida e IMC vêm das respostas reais, sem estimativas clínicas ou promessas de emagrecimento. */
+  let resultProfileShown=false;
+  let nextResultStage="summary";
+  const photoNext = (name,cls='',alt='')=>`<img src="/pagina/images/${name}" alt="${escapeHTML(alt)}" class="${cls}" loading="lazy" decoding="async">`;
+  const nextFooter = (label='Continuar →',disabled=false,extra='')=>`<div class="next-footer"><button type="button" class="next-cta" ${extra||'data-next'} ${disabled?'disabled':''}>${label}</button></div>`;
+  const nextOption = (key,value,label,icon='',img='',mode='single',desc='')=>{
+    const active=mode==='multi'?Array.isArray(answers[key])&&answers[key].includes(value):answers[key]===value;
+    return `<button type="button" class="next-option ${img?'with-photo':''} ${active?'is-selected':''}" data-${mode}="${key}" data-value="${value}" aria-pressed="${active}">${img?photoNext(img,'next-opt-photo'):icon?`<span class="next-opt-icon">${icon}</span>`:''}<span class="next-opt-copy">${label}${desc?`<small>${desc}</small>`:''}</span><span class="next-opt-end">${mode==='multi'?(active?'☑':'□'):'→'}</span></button>`;
+  };
+  function nextPage(title,inner,desc='',footer='',cls=''){
+    wrap(`<main class="next-page ${cls}"><h1 class="next-title">${title}</h1>${desc?`<p class="next-desc">${desc}</p>`:''}${inner}${footer}</main>`,'next-page-shell');
+  }
+  function nextMeasure(step){
+    const conf={25:['height','Qual é a sua altura?','cm','pol',120,220,180],26:['currentWeight','Qual é o seu peso atual?','kg','lb',35,210,70],27:['targetWeight','E qual peso você quer chegar?','kg','lb',35,210,70]}[step];
+    const [key,title,mainUnit,otherUnit,min,max,fallback]=conf;
+    const unit=answers[key+'_displayUnit']||mainUnit;
+    const stored=Number(answers[key]);
+    const valid=Number.isFinite(stored)&&stored>0?stored:fallback;
+    const imperial=unit===otherUnit;
+    const minimum=imperial?Math.round(min*(key==='height'?0.393701:2.20462)):min;
+    const maximum=imperial?Math.round(max*(key==='height'?0.393701:2.20462)):max;
+    const display=Math.round(imperial?valid*(key==='height'?0.393701:2.20462):valid);
+    const safeDisplay=Math.max(minimum,Math.min(maximum,display));
+    const caption=step===25?'Sua altura ajuda a adaptar os movimentos e a amplitude dos exercícios.':step===26?'Este valor será utilizado apenas para montar o seu resumo pessoal.':'É uma referência escolhida por você, não uma promessa de resultado do programa.';
+    nextPage(title,`<div class="next-unit-switch"><button type="button" class="${!imperial?'active':''}" data-display-unit="${mainUnit}" data-for="${key}">${mainUnit}</button><button type="button" class="${imperial?'active':''}" data-display-unit="${otherUnit}" data-for="${key}">${otherUnit}</button></div><div class="next-measure-number"><output data-measure-output>${safeDisplay}</output><small>${unit}</small></div><div class="next-measure-slider"><input aria-label="Ajustar ${escapeHTML(title)}" data-next-range="${key}" min="${minimum}" max="${maximum}" step="1" value="${safeDisplay}" type="range"><span class="next-slider-arrow">▲</span><div class="next-range-ends"><span>${minimum}</span><span>${Math.round((minimum+maximum)/2)}</span><span>${maximum}</span></div></div><p class="next-adjust">Arraste para ajustar</p>${step===25?'<p class="next-small-note">☝️ Calculando seu IMC...</p>':''}<p class="next-explainer">${caption}</p>`, '',nextFooter('Próximo passo →',false,'data-next-measure="'+key+'"'),'next-measure-stage');
+  }
+  function renderNextScreens(){
+    switch(current){
+      case 21:
+        nextPage('Como costuma estar sua <em>disposição?</em>',`<div class="next-options">${nextOption('energyBefore','baixa','Frequentemente me sinto sem energia','🔋')}${nextOption('energyBefore','media','Minha energia varia ao longo do dia','🌤️')}${nextOption('energyBefore','alta','Geralmente tenho boa disposição','⚡')}</div>`,'Considere seu dia a dia, não apenas agora.');break;
+      case 22:
+        nextPage('A Calistenia Asiática <em>pode fazer parte da sua rotina</em>',`<div class="next-benefits-hero">${photoNext('male-coach.webp','next-benefit-man','Homem demonstrando exercício')}<span class="benefit-item b1">Mais energia</span><span class="benefit-item b2">Mobilidade</span><span class="benefit-item b3">Mais foco</span><span class="benefit-item b4">Bem-estar</span></div><p class="next-story">O programa reúne movimentos progressivos que você pode adaptar ao seu nível e praticar em casa.</p><div class="next-benefits-list"><div>🔵 <strong>Movimentos para fortalecer o corpo</strong> no próprio ritmo</div><div>🟢 <strong>Mobilidade e flexibilidade</strong> com exercícios progressivos</div><div>🟡 <strong>Rotina organizada</strong> para acompanhar pelo celular</div></div>`,'',nextFooter(),'next-story-page');break;
+      case 23:
+        nextPage('E como você prefere <em>começar</em> seu treino?',`<div class="next-options">${nextOption('trainingIntensity','leve','Bem leve','🌱')}${nextOption('trainingIntensity','intermediario','Intermediário','🌿')}${nextOption('trainingIntensity','ativo','Mais ativo','⚡')}${nextOption('trainingIntensity','decidir','Prefiro que vocês decidam','💪')}</div>`,'Você pode mudar isso depois.');break;
+      case 24:{
+        const variants={leve:['Bem leve','Você escolheu começar em um ritmo tranquilo.'],intermediario:['Intermediário','Você escolheu um ritmo equilibrado.'],ativo:['Mais ativo','Você escolheu uma rotina mais ativa.'],decidir:['Adaptável','Você prefere escolher a intensidade durante o programa.']};
+        const [label,desc]=variants[answers.trainingIntensity]||variants.decidir;
+        const week=[['SEMANA 1','male-fitness.webp','Conheça os movimentos e explore seu ritmo.'],['SEMANA 2','male-lunge.webp','Inclua mobilidade e repetições adaptadas.'],['SEMANA 3','male-abs.webp','Acompanhe sua consistência e técnica.'],['SEMANA 4','male-stretch.webp','Continue seu hábito, se desejar.']];
+        nextPage('Ótimo, seu treino pode começar assim: <em>'+label+'</em>',`<div class="next-info-blue">${desc} O aplicativo permite acompanhar os exercícios de forma progressiva.</div><div class="next-week-grid">${week.map(([w,img,body])=>`<div class="next-week-card">${photoNext(img,'',w)}<strong>${w}</strong><p>${body}</p></div>`).join('')}</div>`,'',nextFooter(),'next-weeks-stage');break;}
+      case 25:case 26:case 27:nextMeasure(current);break;
+      case 28:
+        nextPage('Quanto de água <em>você bebe diariamente?</em>',`<div class="next-options">${nextOption('waterIntake','cha','Eu só tomo café ou chá','☕')}${nextOption('waterIntake','pouca','Bebo pouca água','💧')}${nextOption('waterIntake','moderada','Uma boa quantidade','💦')}${nextOption('waterIntake','boa','Bebo água o dia inteiro','🚰')}</div>`);break;
+      case 29:
+        nextPage('Quantas <em>horas de sono</em> você costuma ter?',`<div class="next-options">${nextOption('sleepDuration','menos5','Menos de 5 horas','😵')}${nextOption('sleepDuration','5a6','5 – 6 horas','🥱')}${nextOption('sleepDuration','7a8','7 – 8 horas','🌜')}${nextOption('sleepDuration','mais8','Mais de 8 horas','😴')}</div>`);break;
+      case 30:{
+        const opts=[['semrestricoes','Sem restrições: Aberto a todos os alimentos','meal-all.webp'],['vegetariana','Eu sou vegetariano: Verduras, grãos, mas sem carne animal','meal-vegetarian.webp'],['vegana','Eu sou vegano: À base de plantas, sem produtos de origem animal','meal-vegan.webp'],['gluten','Sem glúten: Excluo alimentos que contêm glúten','meal-glutenfree.webp'],['lactose','Sem lactose: Excluo produtos lácteos','meal-lactose.webp']];
+        nextPage('Quais são suas <em>preferências alimentares?</em>',`<div class="next-options next-meal-options">${opts.map(([val,label,img])=>nextOption('mealPreferences',val,label,'',img)).join('')}</div>`);break;}
+      case 31:
+        nextPage('Como estão seus <em>níveis de energia</em> durante o dia?',`<div class="next-options">${nextOption('energyLevel','baixa','Me sinto exausto a maior parte do tempo','😳')}${nextOption('energyLevel','media','Variam ao longo do dia','😮‍💨')}${nextOption('energyLevel','alta','Geralmente sou muito ativo','⚡')}</div>`);break;
+      case 32:{
+        nextPage('É assim que a <em>evolução da sua rotina</em> pode acontecer',`<p class="next-story">Seu progresso depende de frequência, intensidade e adaptação. Este gráfico é uma <strong>ilustração</strong> da construção de um hábito, não uma previsão de resultados.</p><div class="next-chart-card"><p>Possíveis trajetórias de constância</p><svg viewBox="0 0 340 240" role="img" aria-label="Gráfico ilustrativo de duas rotinas: constância crescente e rotina irregular"><line x1="25" y1="195" x2="325" y2="195" stroke="#dce3ef"/><line x1="25" y1="38" x2="25" y2="195" stroke="#dce3ef"/><path class="next-graph-green" d="M25 195 C85 195 98 155 137 142 S205 45 255 50 S305 48 320 45" fill="none" stroke="#17ba89" stroke-width="4"/><path class="next-graph-red" d="M25 195 C93 193 105 191 158 190 S264 186 320 178" fill="none" stroke="#ef505d" stroke-width="4"/><circle cx="25" cy="195" r="5" fill="#fff" stroke="#087cff" stroke-width="3"/><circle cx="320" cy="45" r="5" fill="#fff" stroke="#17ba89" stroke-width="3"/><circle cx="320" cy="178" r="5" fill="#fff" stroke="#ef505d" stroke-width="3"/><rect x="180" y="66" width="139" height="27" rx="5" fill="#17ba89"/><text x="249" y="84" text-anchor="middle" font-size="10" font-weight="800" fill="white">Rotina consistente</text><rect x="179" y="148" width="141" height="25" rx="5" fill="#ef505d"/><text x="249" y="164" text-anchor="middle" font-size="10" font-weight="800" fill="white">Rotina irregular</text><text x="27" y="221" font-size="12" font-weight="700" fill="#39404d">Início</text><text x="291" y="221" font-size="12" font-weight="700" fill="#39404d">Tempo</text></svg></div>`,'',nextFooter('Concluir meu teste →'),'next-chart-stage');break;}
+      case 33:{
+        const age=answers.exactAge?`${Math.round(Number(answers.exactAge))} anos`:'idade não informada';
+        nextPage('Estamos organizando <em>seu plano personalizado</em>',`<div class="next-loading-track"><div class="next-loading-fill"></div></div><p class="next-loading-label">Organizando seus dados</p><div class="next-loading-points"><div>✓ Preferência de intensidade: <strong>${escapeHTML(answers.trainingIntensity||'adaptável')}</strong></div><div>✓ Objetivo informado: <strong>${escapeHTML(answers.mainGoal||'movimento')}</strong></div><div>✓ Idade: <strong>${escapeHTML(age)}</strong></div></div><p class="next-story">As informações serão utilizadas para apresentar o programa. Elas não permitem prever resultados físicos.</p>`,'',nextFooter('Ver meu resumo →'),'next-loading-stage');break;}
+      case 34:{
+        const h=Number(answers.height),w=Number(answers.currentWeight),goal=Number(answers.targetWeight);
+        const hasBody=Number.isFinite(h)&&h>=120&&Number.isFinite(w)&&w>0;
+        const bmi=hasBody?w/((h/100)**2):null;
+        const bmiStr=bmi!==null?bmi.toFixed(1).replace('.',','):'—';
+        const marker=bmi===null?50:Math.max(0,Math.min(100,((bmi-15)/25)*100));
+        if(nextResultStage==="summary"){
+          const weightText=Number.isFinite(w)&&w>0?`${Math.round(w)} kg`:'não informado';
+          const goalText=Number.isFinite(goal)&&goal>0?`${Math.round(goal)} kg`:'não informado';
+          nextPage('Seu <em>resumo está pronto!</em>',`<p class="next-story">Você informou peso atual de <strong>${escapeHTML(weightText)}</strong> e referência de <strong>${escapeHTML(goalText)}</strong>.</p><div class="next-summary-graph"><h2>Suas medidas de referência</h2><svg class="next-personal-chart" viewBox="0 0 340 165" role="img" aria-label="Comparação visual do peso informado e do peso de referência escolhido"><line x1="25" x2="315" y1="125" y2="125" stroke="#dae2f1" stroke-width="1"/><rect x="80" y="${Math.round(125-88*(w>0?w:70)/Math.max(w>0?w:70,goal>0?goal:70))}" width="56" height="${Math.round(88*(w>0?w:70)/Math.max(w>0?w:70,goal>0?goal:70))}" rx="7" fill="#087cff" class="next-weight-bar"/><rect x="209" y="${Math.round(125-88*(goal>0?goal:70)/Math.max(w>0?w:70,goal>0?goal:70))}" width="56" height="${Math.round(88*(goal>0?goal:70)/Math.max(w>0?w:70,goal>0?goal:70))}" rx="7" fill="#57aef0" class="next-weight-bar"/><text x="108" y="143" font-size="11" fill="#485262" text-anchor="middle">Atual</text><text x="237" y="143" font-size="11" fill="#485262" text-anchor="middle">Referência</text><text x="108" y="25" font-size="13" font-weight="800" fill="#1f2a39" text-anchor="middle">${Math.round(w>0?w:70)} kg</text><text x="237" y="25" font-size="13" font-weight="800" fill="#1f2a39" text-anchor="middle">${Math.round(goal>0?goal:70)} kg</text></svg><div class="next-summary-bars"><div><span>Peso atual</span><strong>${escapeHTML(weightText)}</strong></div><div><span>Peso de referência</span><strong>${escapeHTML(goalText)}</strong></div></div><p>Esses valores são as respostas informadas por você, não uma previsão de perda de peso.</p></div><p class="next-story">Conheça agora seu resumo de perfil antes de ver a oferta.</p>`,'',nextFooter('Continuar →',false,'data-show-profile'),'next-summary-stage');
+        } else if(nextResultStage==="profile") {
+          nextPage('Seu <em>perfil está pronto!</em>',`<div class="next-profile-card"><h2>Índice de Massa Corporal (IMC)</h2><strong class="next-bmi">${bmiStr}</strong><div class="next-bmi-scale"><i style="left:${marker}%"></i></div><div class="next-bmi-labels"><span>15</span><span>18,5</span><span>25</span><span>30</span><span>40</span></div><small>${hasBody?'IMC calculado com os valores fornecidos. Não avalia composição corporal isoladamente.':'Informe altura e peso para calcular o IMC.'}</small></div><div class="next-profile-card"><h2>Sua rotina</h2><p>Preferência de treino: <strong>${escapeHTML(answers.trainingIntensity||'adaptável')}</strong></p><p>Atividade diária: <strong>${escapeHTML(answers.dailyActivity||'não informada')}</strong></p><p>Seu programa oferece exercícios progressivos para fazer em casa.</p></div><div class="next-info-blue">O quiz apresenta sugestões gerais e não substitui avaliação profissional de saúde.</div>`,'',nextFooter('Continuar →',false,'data-next-result'),'next-profile-stage');
+        } else if(nextResultStage==="wellness") {
+          nextPage('Descubra uma rotina de <em>movimento e bem-estar</em>',`<img class="offer-prep-image" src="/pagina/images/male-positive.webp" alt="Homem praticando calistenia" loading="lazy"><p class="next-story">Movimentar-se de maneira regular pode ser uma parte importante dos cuidados com a saúde. O programa reúne exercícios de força e mobilidade para fazer em casa.</p><div class="next-info-blue">Cada pessoa evolui no próprio ritmo. Não há promessa de alteração hormonal ou tratamento de saúde.</div>`,'',nextFooter('Continuar →',false,'data-next-result'),'next-story-page');
+        } else if(nextResultStage==="confidence") {
+          nextPage('Quão <em>confiante</em> você está para começar?',`<div class="next-options">${nextOption('confidence','muito','Muito, quero começar!','🚀')}${nextOption('confidence','tentar','Estou disposto a tentar algo novo!','✅')}${nextOption('confidence','duvida','Ainda tenho dúvidas, mas quero conhecer','💪')}</div>`,'Escolha a resposta que combina mais com você.');
+        } else if(nextResultStage==="preview") {
+          const currentW=Number(answers.currentWeight),targetW=Number(answers.targetWeight);
+          const weightText=Number.isFinite(currentW)&&currentW>0?Math.round(currentW)+' kg':'Não informado';
+          const targetText=Number.isFinite(targetW)&&targetW>0?Math.round(targetW)+' kg':'Não informado';
+          nextPage('Seu plano de Calistenia Asiática está <em>quase pronto!</em>',`<div class="offer-plan-preview"><div class="offer-plan-images"><div><span>Seu ponto de partida</span>${photoNext('male-fitness.webp')}</div><div><span>Seu objetivo</span>${photoNext('male-positive.webp')}</div></div><div class="offer-plan-columns"><div><small>Peso atual</small><strong>${escapeHTML(weightText)}</strong><small>Rotina de exercícios</small><strong>${escapeHTML(answers.dailyActivity||'Informada no quiz')}</strong></div><div><small>Peso de referência</small><strong>${escapeHTML(targetText)}</strong><small>Foco do programa</small><strong>Força e mobilidade</strong></div></div></div><div class="next-info-blue">As imagens são ilustrativas. A aparência física e os resultados não podem ser previstos pelo quiz.</div>`,'',nextFooter('CONTINUAR',false,'data-next-result'),'next-summary-stage');
+        }
+        break;}
+    }
+  }
   function render() {
     document.title='calisteniasiatica';
     if(current!==35 && offerUnlockTimer){clearTimeout(offerUnlockTimer);offerUnlockTimer=null;}
     if(current===1){
       intro();
-    } else if(current===35)offer(); else if(current<=20)renderFirstTwenty(); else renderQuestion(questions[current]);
+    } else if(current===35)offer(); else if(current<=20)renderFirstTwenty(); else renderNextScreens();
     window.scrollTo({top:0,behavior:'instant'});
   }
   function goTo(next,replace=false) {
     const previousStep=current;
     current=Math.min(35,Math.max(1,next));
     if(current===1 && previousStep!==1)showQuizLead=false;
+    if(current!==34){resultProfileShown=false;nextResultStage='summary';}
     if(current===35 && previousStep!==35){try{sessionStorage.removeItem(OFFER_START_KEY);}catch(_){}}
     const url=current===1?'/pagina/':'/pagina/step-'+current;
     const params=location.search;
@@ -422,14 +575,19 @@
       if(!Number.isInteger(age)||age<18||age>100){root.querySelector('.validation').textContent='Digite uma idade válida entre 18 e 100 anos.';return;}
       answers.exactAge=age;remember();return goTo(20);
     }
-    if(button.hasAttribute('data-back'))return goTo(current-1);
+    if(button.hasAttribute('data-show-profile')){resultProfileShown=true;nextResultStage='profile';renderNextScreens();window.scrollTo(0,0);return;}
+    if(button.hasAttribute('data-next-result')&&nextResultStage==='preview'){return goTo(35);}
+    if(button.hasAttribute('data-next-result')){const order=['summary','profile','wellness','confidence','preview'];const idx=order.indexOf(nextResultStage);nextResultStage=order[Math.min(idx+1,order.length-1)];renderNextScreens();window.scrollTo(0,0);return;}
+    if(button.hasAttribute('data-display-unit')){const key=button.getAttribute('data-for');answers[key+'_displayUnit']=button.getAttribute('data-display-unit');remember();renderNextScreens();return;}
+    if(button.hasAttribute('data-next-measure')){const key=button.getAttribute('data-next-measure');if(!Number.isFinite(Number(answers[key]))){answers[key]=key==='height'?180:70;remember();}return goTo(current+1);}
+    if(button.hasAttribute('data-back')){if(current===34&&nextResultStage!=='summary'){const order=['summary','profile','wellness','confidence','preview'];nextResultStage=order[Math.max(0,order.indexOf(nextResultStage)-1)];resultProfileShown=nextResultStage!=='summary';renderNextScreens();return;}return goTo(current-1);}
     if(button.hasAttribute('data-age')){answers={ageRange:button.getAttribute('data-age')};remember();return goTo(2);}
     if(button.hasAttribute('data-next')){
       if(current>=16&&current<=18){const key=current===16?'height':current===17?'currentWeight':'targetWeight'; if(answers[key]===undefined)answers[key]=current===16?165:current===17?73:57;remember();}
       return goTo(current+1);
     }
     if(button.hasAttribute('data-single')){
-      answers[button.getAttribute('data-single')]=button.getAttribute('data-value');remember();return goTo(current+1);
+      answers[button.getAttribute('data-single')]=button.getAttribute('data-value');remember();if(current===34&&nextResultStage==='confidence'){nextResultStage='preview';renderNextScreens();window.scrollTo(0,0);return;}return goTo(current+1);
     }
     if(button.hasAttribute('data-multi')){
       const key=button.getAttribute('data-multi'),value=button.getAttribute('data-value');
@@ -448,6 +606,13 @@
     }
   });
   root.addEventListener('input',event=>{
+    if(event.target.hasAttribute('data-next-range')){
+      const el=event.target,key=el.getAttribute('data-next-range'),value=Number(el.value);
+      const unit=answers[key+'_displayUnit']||(key==='height'?'cm':'kg');
+      answers[key]=unit==='pol'?value*2.54:unit==='lb'?value/2.2046226:value;
+      const out=root.querySelector('[data-measure-output]');if(out)out.textContent=Math.round(value);
+      remember();return;
+    }
     if(event.target.hasAttribute('data-ruler')){
       const el=event.target,key=el.getAttribute('data-ruler'),unit=answers[key+'_unit']||(key==='height'?'cm':'kg');
       const n=Number(el.value);answers[key]=key==='height'?(unit==='pol'?n*2.54:n):(unit==='Libra'?n/2.2046226:n);

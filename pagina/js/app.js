@@ -13,6 +13,9 @@
   const OFFER_START_KEY = 'atlas_calisthenia_21d_offer_started';
   const OFFER_UNLOCK_MS = 381000; // 6m21s (381 segundos) após abrir a oferta
   let offerUnlockTimer = null;
+  let stage33Ticker = null;
+  let stage33Redirect = null;
+  const STAGE33_DURATION_MS = 9000;
   const UTM_KEY = 'atlas_calisthenia_21d_traffic';
   const SELECTED_KEYS = new Set(['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id','src','sck','xcod','subid','subid1','subid2','subid3','subid4','subid5','fbclid','gclid','gbraid','wbraid','msclkid','ttclid','gad_source']);
   const escapeHTML = (input) => String(input ?? '').replace(/[&<>"']/g, ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -520,8 +523,16 @@
       case 32:{
         nextPage('É assim que a <em>evolução da sua rotina</em> pode acontecer',`<p class="next-story">Seu progresso depende de frequência, intensidade e adaptação. Este gráfico é uma <strong>ilustração</strong> da construção de um hábito, não uma previsão de resultados.</p><div class="next-chart-card"><p>Possíveis trajetórias de constância</p><svg viewBox="0 0 340 240" role="img" aria-label="Gráfico ilustrativo de duas rotinas: constância crescente e rotina irregular"><line x1="25" y1="195" x2="325" y2="195" stroke="#dce3ef"/><line x1="25" y1="38" x2="25" y2="195" stroke="#dce3ef"/><path class="next-graph-green" d="M25 195 C85 195 98 155 137 142 S205 45 255 50 S305 48 320 45" fill="none" stroke="#17ba89" stroke-width="4"/><path class="next-graph-red" d="M25 195 C93 193 105 191 158 190 S264 186 320 178" fill="none" stroke="#ef505d" stroke-width="4"/><circle cx="25" cy="195" r="5" fill="#fff" stroke="#087cff" stroke-width="3"/><circle cx="320" cy="45" r="5" fill="#fff" stroke="#17ba89" stroke-width="3"/><circle cx="320" cy="178" r="5" fill="#fff" stroke="#ef505d" stroke-width="3"/><rect x="180" y="66" width="139" height="27" rx="5" fill="#17ba89"/><text x="249" y="84" text-anchor="middle" font-size="10" font-weight="800" fill="white">Rotina consistente</text><rect x="179" y="148" width="141" height="25" rx="5" fill="#ef505d"/><text x="249" y="164" text-anchor="middle" font-size="10" font-weight="800" fill="white">Rotina irregular</text><text x="27" y="221" font-size="12" font-weight="700" fill="#39404d">Início</text><text x="291" y="221" font-size="12" font-weight="700" fill="#39404d">Tempo</text></svg></div>`,'',nextFooter('Concluir meu teste →'),'next-chart-stage');break;}
       case 33:{
-        const age=answers.exactAge?`${Math.round(Number(answers.exactAge))} anos`:'idade não informada';
-        nextPage('Estamos organizando <em>seu plano personalizado</em>',`<div class="next-loading-track"><div class="next-loading-fill"></div></div><p class="next-loading-label">Organizando seus dados</p><div class="next-loading-points"><div>✓ Preferência de intensidade: <strong>${escapeHTML(answers.trainingIntensity||'adaptável')}</strong></div><div>✓ Objetivo informado: <strong>${escapeHTML(answers.mainGoal||'movimento')}</strong></div><div>✓ Idade: <strong>${escapeHTML(age)}</strong></div></div><p class="next-story">As informações serão utilizadas para apresentar o programa. Elas não permitem prever resultados físicos.</p>`,'',nextFooter('Ver meu resumo →'),'next-loading-stage');break;}
+        // Arquivos originais da pasta "imagens" do Drive, já incluídos no ZIP.
+        // Pares visuais ilustrativos: não são fotos de evolução da mesma pessoa.
+        const comparisons=[
+          ['body-large.webp','body-average.webp','Perfis corporais'],
+          ['body-average2.webp','body-toned.webp','Força e composição corporal'],
+          ['body-slim.webp','body-dream.webp','Objetivos diferentes']
+        ];
+        const cards=comparisons.map(([left,right,caption],i)=>`<figure class="stage33-pair"><div class="stage33-pair-images"><div><span>Referência inicial</span>${photoNext(left,'stage33-compare-image','Exemplo ilustrativo de perfil inicial')}</div><div><span>Objetivo ilustrativo</span>${photoNext(right,'stage33-compare-image','Exemplo ilustrativo de objetivo físico')}</div></div><figcaption>${caption}</figcaption></figure>`).join('');
+        nextPage('Aguarde, estamos organizando <em>seu plano personalizado</em>',`<div class="stage33-progress" data-stage33-progress role="progressbar" aria-label="Preparação do resumo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="stage33-progress-fill" data-stage33-fill></div></div><p class="stage33-percent" data-stage33-percent aria-live="off">0%</p><div class="stage33-comparison-list">${cards}</div><p class="stage33-disclaimer">Imagens ilustrativas de perfis e objetivos físicos. Não são fotos de antes e depois de participantes nem promessa de resultado.</p><p class="stage33-automatic">Ao concluir o carregamento, você será direcionado automaticamente ao seu resumo.</p>`,'','','next-loading-stage stage33-gallery');
+        break;}
       case 34:{
         const h=Number(answers.height),w=Number(answers.currentWeight),goal=Number(answers.targetWeight);
         const hasBody=Number.isFinite(h)&&h>=120&&Number.isFinite(w)&&w>0;
@@ -547,12 +558,37 @@
         break;}
     }
   }
+  // Etapa 33: a barra representa apenas o tempo da apresentação, não uma análise clínica.
+  function stopStage33Progress(){
+    if(stage33Ticker!==null){clearInterval(stage33Ticker);stage33Ticker=null;}
+    if(stage33Redirect!==null){clearTimeout(stage33Redirect);stage33Redirect=null;}
+  }
+  function startStage33Progress(){
+    stopStage33Progress();
+    const container=root.querySelector('[data-stage33-progress]');
+    if(!container || current!==33) return;
+    const fill=container.querySelector('[data-stage33-fill]');
+    const value=container.querySelector('[data-stage33-percent]');
+    const started=performance.now();
+    let moved=false;
+    const update=()=>{
+      if(current!==33 || !container.isConnected){stopStage33Progress();return;}
+      const progress=Math.min(100,Math.round((performance.now()-started)/STAGE33_DURATION_MS*100));
+      if(fill)fill.style.width=progress+'%';
+      if(value)value.textContent=progress+'%';
+      container.setAttribute('aria-valuenow',String(progress));
+      if(progress>=100&&!moved){moved=true;stopStage33Progress();stage33Redirect=setTimeout(()=>{stage33Redirect=null;if(current===33)goTo(34);},120);}
+    };
+    update();stage33Ticker=setInterval(update,75);
+  }
   function render() {
+    stopStage33Progress();
     document.title='calisteniasiatica';
     if(current!==35 && offerUnlockTimer){clearTimeout(offerUnlockTimer);offerUnlockTimer=null;}
     if(current===1){
       intro();
     } else if(current===35)offer(); else if(current<=20)renderFirstTwenty(); else renderNextScreens();
+    if(current===33)startStage33Progress();
     window.scrollTo({top:0,behavior:'instant'});
   }
   function goTo(next,replace=false) {

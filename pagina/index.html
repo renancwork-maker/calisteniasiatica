@@ -133,6 +133,72 @@ body{background:#f9f9f7;color:var(--ink)}
 .sticky-continue{background:linear-gradient(transparent,#f9f9f7 30%,#f9f9f7)}
 @media (min-width:700px){.hero-img{right:calc(50% - 525px)!important;top:145px!important;bottom:auto!important;width:520px!important;max-width:none!important;max-height:none!important}.main .btns{align-self:center;margin-left:0}}
 @media (max-width:370px){.hero-img{width:265px!important;right:-45px!important}.photo-stage .quiz-woman{width:225px!important;right:-64px!important}}
+
+/* Tema visual reconstruído a partir do ZIP masculino original: branco, azul e cartões limpos.
+   Mantém a marcação funcional, /pagina, CTAs, UTMify, VTurb e Mivvo. */
+:root{--pink:#007aff;--ink:#090a0c;--muted:#545454;--bg:#fff}
+html,body{background:#fff!important;color:#121212!important;font-family:Poppins,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important}
+.page,.reference-page,.reference-stage,.stage,.main{background:#fff!important}
+.page{min-height:100svh!important}
+.hdr,.site-header{background:#fafafa!important;min-height:58px!important;gap:7px!important;padding:10px 12px!important;border:0!important}
+.hdr-logo,.brand{color:#000!important;font-family:Impact,"Arial Narrow",sans-serif!important;letter-spacing:.012em!important;font-size:27px!important}
+.hdr-badge,.by{background:#007aff!important;color:#fff!important;border-radius:6px!important;font-size:10px!important;font-weight:650!important;padding:5px 7px!important}
+.back{color:#141414!important}
+.progress{background:rgba(0,122,255,.09)!important;height:4px!important}
+.progress i{background:#007aff!important;border-radius:999px!important}
+.reference-stage{max-width:480px!important;margin-inline:auto!important;padding:18px 15px max(22px,env(safe-area-inset-bottom))!important;min-height:calc(100svh - 62px)!important}
+.reference-stage .content-wrap,.reference-stage .info-block{width:100%!important;max-width:450px!important}
+.reference-stage h1,.stage h1{font-size:clamp(21px,5vw,27px)!important;color:#090a0c!important;letter-spacing:-.025em!important;line-height:1.24!important;font-weight:800!important;text-align:center!important;max-width:460px!important}
+.reference-stage h1 em,.hl{color:#007aff!important}
+.reference-stage .subtitle,.stage .desc{color:#545454!important;font-size:14px!important;line-height:1.45!important}
+.reference-stage .choice-list{gap:12px!important}
+.reference-stage .ref-choice,.stage .choice,.meal-card,.habit-card,.sleep-card{background:#fff!important;border:1px solid rgba(0,122,255,.35)!important;color:#111!important;border-radius:14px!important;box-shadow:0 3px 10px rgba(0,0,0,.06)!important;min-height:60px!important;font-weight:650!important;transition:border-color .14s,background .14s!important}
+.reference-stage .ref-choice.selected,.stage .choice.selected,.meal-card.selected,.habit-card.selected,.sleep-card.selected{border:2px solid #007aff!important;background:#f0f7ff!important}
+.reference-stage .ref-choice:hover,.stage .choice:hover{background:#f0f7ff!important;border-color:#007aff!important}
+.reference-stage .ref-choice .option-check,.meal-card .option-check,.habit-card .option-check{border-color:#b1c5e1!important}
+.reference-stage .ref-choice.selected .option-check,.meal-card.selected .option-check,.habit-card.selected .option-check{background:#007aff!important;border-color:#007aff!important}
+.reference-stage .choice-icon,.mini-icon,.habit-icon{background:#f0f7ff!important;color:#007aff!important}
+.reference-stage .option-arrow,.stage .choice span:last-child{color:#007aff!important}
+.primary,.checkout,.reference-stage .primary,.quiz-lead-button{background:#007aff!important;color:#fff!important;border:0!important;border-radius:12px!important;box-shadow:0 6px 18px rgba(0,122,255,.17)!important;min-height:55px!important;font-size:15px!important;font-weight:800!important}
+.primary:hover,.checkout:hover,.quiz-lead-button:hover{background:#0066da!important}
+.primary:disabled,.reference-stage .primary:disabled{background:#a6cbf8!important;box-shadow:none!important}
+.reference-stage .bottom-action{max-width:450px!important;position:sticky!important;bottom:max(10px,env(safe-area-inset-bottom))!important;z-index:5!important;padding:14px 0 max(10px,env(safe-area-inset-bottom))!important;background:linear-gradient(transparent,rgba(255,255,255,.97) 26%,#fff 50%)!important}
+.reference-stage .bottom-action .primary{max-width:100%!important}
+.info-picture,.group-image{border-radius:12px!important;object-fit:contain!important;background:#f7f9ff!important}
+.body-card{background:#fff!important;border:1px solid #d2e3fc!important;border-radius:14px!important;box-shadow:0 4px 15px rgba(0,0,0,.06)!important}
+.body-card.selected{background:#f0f7ff!important;border:2px solid #007aff!important}
+.body-card-img{border-radius:11px!important}
+.ruler:before{background:#007aff!important}
+.ruler-arrow{color:#007aff!important}
+.unit-toggle button.active{background:#007aff!important}
+.soft-note{background:#f0f7ff!important;color:#303b4d!important}
+.sticky-continue{background:linear-gradient(transparent,rgba(255,255,255,.96) 25%,#fff 45%)!important;bottom:max(12px,env(safe-area-inset-bottom))!important}
+.sticky-continue .primary{background:#007aff!important}
+.meal-stage,.habits-stage{background:#fff!important}
+.quiz-lead-stage{background:#fff!important}
+.quiz-lead-box h1{color:#111!important}
+.quiz-lead-box h1 span{color:#007aff!important}
+.quiz-lead-box p{color:#545454!important}
+.stage{max-width:480px!important;padding:22px 16px 28px!important}
+.stage .choice-list{gap:12px!important}
+.offer-price{color:#007aff!important}
+.panel{border-color:#d5e6ff!important}
+.list-check li:before{color:#007aff!important}
+/* Layout original da capa masculina: faixa ilustrada, figura e opções 2x2 */
+.ref-landing{max-width:480px!important;min-height:calc(100svh - 58px)!important;padding:8px 14px 18px!important;overflow:hidden!important;align-items:stretch!important;display:flex!important;flex-direction:column!important}
+.ref-landing .reference-banner{display:block;width:100%;height:auto;aspect-ratio:8/3;object-fit:contain;margin:0 auto 4px;flex:none}
+.ref-age-heading{margin:8px 0 9px!important;color:#101010!important;font-size:16px!important;font-weight:800!important;text-align:center!important;z-index:3}
+.ref-age-layout{width:100%;position:relative;min-height:410px;display:flex;flex-direction:column;justify-content:flex-end;flex:none}
+.ref-age-layout .hero-img{position:absolute!important;right:-42px!important;top:0!important;bottom:auto!important;width:276px!important;max-width:none!important;max-height:none!important;height:414px!important;object-fit:contain!important;object-position:center bottom!important;z-index:1!important;margin:0!important}
+.ref-age-layout .btns{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;width:100%!important;max-width:100%!important;position:relative!important;z-index:2!important;margin:0 0 12px!important}
+.ref-age-layout .btn{min-height:62px!important;height:62px!important;border-radius:12px!important;border:1px solid rgba(0,122,255,.55)!important;background:rgba(255,255,255,.9)!important;color:#080808!important;box-shadow:0 2px 6px #00000010!important;font-size:14px!important;padding:12px!important;text-align:center!important;justify-content:center!important}
+.ref-age-layout .btn .arrow{display:none!important}
+.ref-age-layout .btn:hover{background:#f0f7ff!important;border-color:#007aff!important}
+.ref-landing .reference-alert{background:#edf1f5;color:#3e4953;border:1px solid #d6dce4;border-radius:10px;padding:12px 14px;font-size:12px;text-align:center;line-height:1.45;margin:6px 0 2px;z-index:3}
+.ref-landing .ftr{font-size:10px!important;line-height:1.4!important;color:#596371!important;max-width:100%!important;position:relative!important;z-index:3!important;padding:10px 4px!important;margin:3px 0 0!important;text-align:center!important}
+@media(min-width:700px){.ref-landing{max-width:480px!important}.reference-stage{max-width:480px!important}.ref-age-layout .hero-img{right:-42px!important;top:0!important;width:276px!important;height:414px!important}.ref-age-layout .btns{width:100%!important;margin-bottom:12px!important}}
+@media(max-width:380px){.ref-age-layout{min-height:370px}.ref-age-layout .hero-img{width:250px!important;height:370px!important;right:-40px!important}.ref-age-layout .btn{min-height:57px!important;height:57px!important}}
+
 </style>
 <script defer src="/pagina/js/app.js"></script>
 </head>

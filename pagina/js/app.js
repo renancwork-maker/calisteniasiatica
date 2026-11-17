@@ -11,8 +11,9 @@
   const VTURB_STREAM = 'https://cdn.converteai.net/e040da1c-3494-4229-81c5-b7e4caf21ba7/6afba5ebdac166e521958649/main.m3u8';
   const STORAGE_KEY = 'atlas_calisthenia_21d_answers';
   const OFFER_START_KEY = 'atlas_calisthenia_21d_offer_started';
-  const OFFER_UNLOCK_MS = 381000; // 6m21s (381 segundos) após abrir a oferta
+  const OFFER_UNLOCK_MS = 383000; // 6m23s (383 segundos) após abrir a oferta
   let offerUnlockTimer = null;
+  let offerUnlockWakeHandler = null;
   let stage33Ticker = null;
   let stage33Redirect = null;
   const STAGE33_DURATION_MS = 9000;
@@ -412,16 +413,42 @@
         window.addEventListener('scroll',onScroll,{passive:true});onScroll();
       }
     }
+    // Um único relógio de parede, independente da duração/reprodução do player VTurb.
+    // Ao voltar para a aba, a oferta é reavaliada imediatamente, mesmo que timers
+    // tenham sido suspensos pelo navegador móvel.
     const revealOffer=()=>{
-      if(current!==35){if(offerUnlockTimer)clearTimeout(offerUnlockTimer);offerUnlockTimer=null;return;}
+      if(current!==35){
+        if(offerUnlockTimer){clearInterval(offerUnlockTimer);offerUnlockTimer=null;}
+        return;
+      }
       const remaining=OFFER_UNLOCK_MS-(Date.now()-startedAt);
-      if(remaining>0){offerUnlockTimer=setTimeout(revealOffer,Math.min(remaining,1000));return;}
-      offerUnlockTimer=null;
+      if(remaining>0) return;
+      if(offerUnlockTimer){clearInterval(offerUnlockTimer);offerUnlockTimer=null;}
       const belowVideo=root.querySelector('[data-gated-offer]');
-      if(belowVideo){belowVideo.hidden=false;belowVideo.removeAttribute('aria-hidden');belowVideo.removeAttribute('inert');}
-      root.querySelectorAll('[data-gated-cta]').forEach(slot=>{slot.hidden=false;});
+      if(!belowVideo) return;
+      belowVideo.hidden=false;
+      belowVideo.removeAttribute('hidden');
+      belowVideo.removeAttribute('aria-hidden');
+      belowVideo.removeAttribute('inert');
+      belowVideo.style.removeProperty('display');
+      root.querySelectorAll('[data-gated-cta]').forEach(slot=>{
+        slot.hidden=false;
+        slot.removeAttribute('hidden');
+        slot.style.removeProperty('display');
+      });
       enableDiscountTrigger();
     };
+    if(offerUnlockTimer)clearInterval(offerUnlockTimer);
+    if(offerUnlockWakeHandler){
+      document.removeEventListener('visibilitychange',offerUnlockWakeHandler);
+      window.removeEventListener('pageshow',offerUnlockWakeHandler);
+      window.removeEventListener('focus',offerUnlockWakeHandler);
+    }
+    offerUnlockWakeHandler=revealOffer;
+    offerUnlockTimer=setInterval(revealOffer,500);
+    document.addEventListener('visibilitychange',revealOffer,{passive:true});
+    window.addEventListener('pageshow',revealOffer,{passive:true});
+    window.addEventListener('focus',revealOffer,{passive:true});
     revealOffer();
   }
 
@@ -553,7 +580,7 @@
       case 21:
         nextPage('Como costuma estar sua <em>disposição?</em>',`<div class="next-options">${nextOption('energyBefore','baixa','Frequentemente me sinto sem energia','🔋')}${nextOption('energyBefore','media','Minha energia varia ao longo do dia','🌤️')}${nextOption('energyBefore','alta','Geralmente tenho boa disposição','⚡')}</div>`,'Considere seu dia a dia, não apenas agora.');break;
       case 22:
-        nextPage('A Calistenia Asiática <em>pode fazer parte da sua rotina</em>',`<div class="next-benefits-hero">${photoNext('male-coach.webp','next-benefit-man','Homem demonstrando exercício')}<span class="benefit-item b1">Mais energia</span><span class="benefit-item b2">Mobilidade</span><span class="benefit-item b3">Mais foco</span><span class="benefit-item b4">Bem-estar</span></div><p class="next-story">O programa reúne movimentos progressivos que você pode adaptar ao seu nível e praticar em casa.</p><div class="next-benefits-list"><div>🔵 <strong>Movimentos para fortalecer o corpo</strong> no próprio ritmo</div><div>🟢 <strong>Mobilidade e flexibilidade</strong> com exercícios progressivos</div><div>🟡 <strong>Rotina organizada</strong> para acompanhar pelo celular</div></div>`,'',nextFooter(),'next-story-page');break;
+        nextPage('',`<img class="benefit-reference-image" src="/pagina/images/benefits-circle-man.webp" alt="Homem praticando calistenia, cercado por benefícios como energia, sono, foco e bem-estar" width="800" height="640" decoding="async" fetchpriority="high"><h2 class="benefit-reference-title">A Calistenia asiática <em>pode integrar</em> sua rotina de exercícios</h2><p class="benefit-reference-copy">O programa inclui <strong>exercícios lentos e de baixo impacto</strong>, com opções para respeitar suas articulações e evoluir progressivamente.</p><div class="benefit-reference-list"><div class="benefit-blue">🔵 <strong>Aliviar tensões</strong> com movimentos leves para costas e articulações.</div><div class="benefit-red">🔴 <strong>Desenvolver mobilidade e flexibilidade</strong> sem forçar o corpo.</div><div class="benefit-gray">🟣 <strong>Fortalecer o corpo</strong> com movimentos suaves e controlados.</div><div class="benefit-yellow">🟡 <strong>Reservar um momento para relaxar</strong> e cuidar do bem-estar.</div><div class="benefit-green">🟢 <strong>Manter uma rotina de atividade física</strong> de forma progressiva.</div></div>`,'',nextFooter('Continuar →'),'benefit-reference-stage');break;
       case 23:
         nextPage('E como você prefere <em>começar</em> seu treino?',`<div class="next-options">${nextOption('trainingIntensity','leve','Bem leve','🌱')}${nextOption('trainingIntensity','intermediario','Intermediário','🌿')}${nextOption('trainingIntensity','ativo','Mais ativo','⚡')}${nextOption('trainingIntensity','decidir','Prefiro que vocês decidam','💪')}</div>`,'Você pode mudar isso depois.');break;
       case 24:{
@@ -651,7 +678,15 @@
   function render() {
     stopStage33Progress();
     document.title='Calistenia Asiática para Homens | Atlas';
-    if(current!==35 && offerUnlockTimer){clearTimeout(offerUnlockTimer);offerUnlockTimer=null;}
+    if(current!==35){
+      if(offerUnlockTimer){clearInterval(offerUnlockTimer);offerUnlockTimer=null;}
+      if(offerUnlockWakeHandler){
+        document.removeEventListener('visibilitychange',offerUnlockWakeHandler);
+        window.removeEventListener('pageshow',offerUnlockWakeHandler);
+        window.removeEventListener('focus',offerUnlockWakeHandler);
+        offerUnlockWakeHandler=null;
+      }
+    }
     if(current===1){
       intro();
     } else if(current===35)offer(); else if(current<=20)renderFirstTwenty(); else renderNextScreens();

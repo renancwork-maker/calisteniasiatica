@@ -576,10 +576,59 @@ button,a,input,select{touch-action:manipulation}
   .ref-male-first .reference-banner{max-height:105px!important}
   .ref-male-first .ref-first-note{margin-top:7px!important}
 }
+
+/* Step 22 — make identical to the requested mobile print */
+.next-mobile-benefits-stage .next-title{display:none}
+.next-mobile-benefits-stage{padding-top:10px;padding-bottom:110px}
+.next-mobile-benefits{width:100%;max-width:390px;margin:0 auto}
+.next-mobile-benefits-hero{display:block;width:100%;max-width:370px;height:auto;margin:0 auto 16px}
+.next-mobile-benefits-title{font-size:clamp(22px,7.2vw,24px);line-height:1.13;font-weight:900;text-align:center;letter-spacing:-.03em;color:#111827;margin:0 auto 12px;max-width:360px}
+.next-mobile-benefits-title em{color:#087cff;font-style:normal}
+.next-mobile-benefits-copy{font-size:14px;line-height:1.52;color:#1f2937;text-align:center;margin:0 auto 16px;max-width:360px}
+.next-mobile-benefits-copy strong{font-weight:900}
+.next-mobile-benefits-list{display:grid;gap:9px;width:100%;max-width:390px;margin:0 auto}
+.next-mobile-benefits-list .benefit-card{display:flex;align-items:flex-start;gap:10px;border-radius:10px;padding:12px 13px;border:1px solid #d7dee7;background:#fff}
+.next-mobile-benefits-list .benefit-card p{margin:0;font-size:13px;line-height:1.42;color:#262d38}
+.next-mobile-benefits-list .benefit-card strong{font-weight:900}
+.next-mobile-benefits-list .benefit-dot{flex:0 0 12px;width:12px;height:12px;border-radius:50%;margin-top:4px;box-shadow:0 0 0 3px rgba(255,255,255,.42) inset}
+.next-mobile-benefits-list .blue{background:#eaf2ff;border-color:#2d6ff3}
+.next-mobile-benefits-list .blue .benefit-dot{background:#4f8ffb}
+.next-mobile-benefits-list .red{background:#fff0f0;border-color:#ec6f6f}
+.next-mobile-benefits-list .red .benefit-dot{background:#ef5f74}
+.next-mobile-benefits-list .neutral{background:#f7f7f8;border-color:#9599a6}
+.next-mobile-benefits-list .neutral .benefit-dot{background:#ddd0f0}
+.next-mobile-benefits-list .yellow{background:#fff7d9;border-color:#d7b644}
+.next-mobile-benefits-list .yellow .benefit-dot{background:#e8bc44}
+.next-mobile-benefits-list .green{background:#e7f7eb;border-color:#45b86c}
+.next-mobile-benefits-list .green .benefit-dot{background:#54cf83}
+@media(max-width:380px){
+  .next-mobile-benefits-stage{padding-left:12px;padding-right:12px}
+  .next-mobile-benefits-hero{max-width:340px;margin-bottom:14px}
+  .next-mobile-benefits-title{font-size:21px}
+  .next-mobile-benefits-list .benefit-card{padding:11px 12px}
+  .next-mobile-benefits-list .benefit-card p{font-size:12.8px}
+}
+
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
+
+/* Etapa de benefícios: composição fiel à referência no mobile. */
+.benefit-reference-stage{padding-top:12px!important;padding-bottom:105px!important;text-align:center}
+.benefit-reference-stage .next-title{display:none}
+.benefit-reference-image{display:block;width:min(100%,420px);height:auto;aspect-ratio:5/4;object-fit:contain;margin:0 auto 14px}
+.benefit-reference-title{font-size:clamp(19px,5.2vw,23px);line-height:1.18;font-weight:900;max-width:390px;margin:12px auto 10px;text-align:center;letter-spacing:-.02em}
+.benefit-reference-title em{color:#087cff;font-style:normal}
+.benefit-reference-copy{font-size:clamp(13px,3.7vw,15px);line-height:1.4;margin:0 auto 12px;max-width:395px}
+.benefit-reference-list{display:grid;gap:5px;margin:0 auto 14px;width:100%;max-width:400px;text-align:left}
+.benefit-reference-list>div{padding:9px 11px;border-radius:7px;border:1px solid;font-size:clamp(12px,3.5vw,14px);line-height:1.32}
+.benefit-blue{background:#d9e7ff;border-color:#3b70ff!important}
+.benefit-red{background:#ffe1e1;border-color:#ed565e!important}
+.benefit-gray{background:#f0f0f2;border-color:#8e899c!important}
+.benefit-yellow{background:#fff8cd;border-color:#d2bd3a!important}
+.benefit-green{background:#dcfae9;border-color:#34ae67!important}
+@media(max-width:350px){.benefit-reference-stage{padding-left:11px!important;padding-right:11px!important}.benefit-reference-image{max-width:310px}.benefit-reference-list>div{padding:8px 9px}}
 </style>
-<script defer src="/pagina/js/app.js"></script>
+<script defer src="/pagina/js/app.js?v=unlock-383000-mobile-20261117"></script>
 </head>
 <body>
 <div id="root"><div class="page visual-reference" data-boot-intro><header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">by Atlas</span></header><main class="main ref-landing ref-male-first"><img class="reference-banner" src="/pagina/images/reference-banner.webp" alt="Calistenia Asiática para homens iniciantes" width="800" height="300" fetchpriority="high"><h1 class="ref-intro-age">Selecione sua idade para começar 👇🏻</h1><img class="ref-male-person" src="/pagina/images/reference-hero.webp" alt="Praticante de calistenia" width="400" height="600" decoding="async" fetchpriority="high"><div class="ref-male-age-options"><button type="button" class="ref-age-btn" data-age="30 – 39 anos"><span>30 – 39 anos</span><span class="option-arrow">➜</span></button><button type="button" class="ref-age-btn" data-age="40 – 49 anos"><span>40 – 49 anos</span><span class="option-arrow">➜</span></button><button type="button" class="ref-age-btn" data-age="50 – 59 anos"><span>50 – 59 anos</span><span class="option-arrow">➜</span></button><button type="button" class="ref-age-btn" data-age="+ 60 anos"><span>+ 60 anos</span><span class="option-arrow">➜</span></button></div><div class="ref-first-note">Faça esse teste e conheça uma proposta de exercícios para sua idade e rotina.</div><p class="ref-first-privacy">🔒 Suas respostas são privadas e usadas para organizar sua experiência no quiz.</p></main></div></div>

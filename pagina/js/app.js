@@ -339,11 +339,13 @@
           <p>Confira no checkout as condições de reembolso e garantia aplicáveis ao seu pedido antes de finalizar a compra.</p>
         </section>
         <section class="offer-blue-section offer-week-plan" aria-label="Como funciona o programa">
-          <h2>O que esperar nas próximas <em>3 semanas</em></h2>
-          <div class="offer-weeks">
-            <div><b>1</b><p><strong>Semana 1 — Primeiros movimentos:</strong> familiarize-se com os exercícios e com as adaptações para o seu ritmo.</p></div>
-            <div><b>2</b><p><strong>Semana 2 — Desenvolvimento da rotina:</strong> acompanhe as atividades de força e mobilidade e observe seu conforto.</p></div>
-            <div><b>3</b><p><strong>Semana 3 — Continuidade:</strong> consolide o hábito, ajuste a intensidade e avalie sua experiência.</p></div>
+          <h2>Conheça as etapas do seu <em>programa de 21 dias</em></h2>
+          <p class="offer-blue-copy">Exercícios progressivos que podem ser adaptados ao seu ritmo. Após os 21 dias, você pode continuar praticando.</p>
+          <div class="offer-week-photo-grid">
+            <article><img src="/pagina/images/male-fitness.webp" loading="lazy" decoding="async" width="382" height="573" alt="Homem se preparando para começar uma rotina de exercícios"><div><b>SEMANA 1</b><h3>Primeiros movimentos</h3><p>Conheça os exercícios, a postura e o seu ritmo inicial.</p></div></article>
+            <article><img src="/pagina/images/male-lunge.webp" loading="lazy" decoding="async" width="800" height="600" alt="Homem praticando movimento de mobilidade e equilíbrio"><div><b>SEMANA 2</b><h3>Força e mobilidade</h3><p>Experimente atividades progressivas respeitando seus limites.</p></div></article>
+            <article><img src="/pagina/images/male-exercise.webp" loading="lazy" decoding="async" width="885" height="498" alt="Homem realizando flexão de braços em ambiente interno"><div><b>SEMANA 3</b><h3>Técnica e constância</h3><p>Acompanhe o programa de 21 dias e pratique com regularidade.</p></div></article>
+            <article><img src="/pagina/images/male-stretch.webp" loading="lazy" decoding="async" width="885" height="498" alt="Homem fazendo exercício de alongamento ao ar livre"><div><b>SEMANA 4</b><h3>Continuidade opcional</h3><p>Após concluir os 21 dias, mantenha os hábitos no seu ritmo.</p></div></article>
           </div>
         </section>
         <section class="offer-blue-section offer-faq" aria-label="Perguntas frequentes">
@@ -361,6 +363,55 @@
       </div>
     </main>`,'offer');
     attachVTurb();
+    const discountSeenKey='atlas_calisthenia_discount10_seen';
+    let discountObserver=null;
+    function displayDiscountModal(){
+      if(current!==35 || !root.querySelector('[data-gated-offer]:not([hidden])')) return;
+      try { if(sessionStorage.getItem(discountSeenKey)==='yes') return; sessionStorage.setItem(discountSeenKey,'yes'); }catch(_){ if(window.__atlasDiscountShown)return;window.__atlasDiscountShown=true; }
+      const overlay=document.createElement('div');
+      overlay.className='discount-modal-backdrop';
+      overlay.setAttribute('data-discount-modal','');
+      overlay.innerHTML=`<div class="discount-modal" role="dialog" aria-modal="true" aria-labelledby="discount-title" aria-describedby="discount-description">
+        <button class="discount-close" type="button" aria-label="Fechar oferta" data-discount-close>×</button>
+        <div class="discount-icon" aria-hidden="true">🎁</div>
+        <p class="discount-eyebrow">Presente especial para você</p>
+        <h2 id="discount-title">Você desbloqueou <span>10% de desconto!</span></h2>
+        <p id="discount-description">Por ter chegado até aqui, use o cupom abaixo na finalização da compra:</p>
+        <div class="discount-code" aria-label="Cupom DECONTO10">DECONTO10</div>
+        <button type="button" class="discount-copy" data-discount-copy>Copiar cupom</button>
+        <a class="discount-checkout" href="${escapeHTML(checkoutHref())}" data-checkout rel="noopener noreferrer">Ir para o checkout →</a>
+        <p class="discount-small">O desconto é aplicado pela Mivvo se o cupom estiver ativo e válido para este produto.</p>
+      </div>`;
+      document.body.appendChild(overlay);
+      const close=()=>{overlay.remove();};
+      overlay.addEventListener('click',e=>{if(e.target===overlay || e.target.closest('[data-discount-close]'))close();});
+      overlay.querySelector('[data-discount-copy]').addEventListener('click',async()=>{
+        try {await navigator.clipboard.writeText('DECONTO10');overlay.querySelector('[data-discount-copy]').textContent='Cupom copiado!';}
+        catch(_){const input=document.createElement('input');input.value='DECONTO10';input.style.position='fixed';input.style.opacity='0';document.body.appendChild(input);input.select();try{document.execCommand('copy');overlay.querySelector('[data-discount-copy]').textContent='Cupom copiado!';}catch(_){overlay.querySelector('[data-discount-copy]').textContent='Cupom: DECONTO10';}input.remove();}
+      });
+      overlay.querySelector('[data-discount-close]').focus();
+      const handleEsc=(e)=>{if(e.key==='Escape'){close();document.removeEventListener('keydown',handleEsc);}};
+      document.addEventListener('keydown',handleEsc);
+    }
+    function enableDiscountTrigger(){
+      const bottom=root.querySelector('.offer-final-checkout');
+      if(!bottom || bottom.dataset.discountBound)return;
+      bottom.dataset.discountBound='yes';
+      if(typeof IntersectionObserver==='function'){
+        discountObserver=new IntersectionObserver(entries=>{
+          if(entries.some(e=>e.isIntersecting)){
+            discountObserver.disconnect();displayDiscountModal();
+          }
+        },{threshold:0.12});
+        discountObserver.observe(bottom);
+      }else{
+        const onScroll=()=>{
+          if(current!==35){window.removeEventListener('scroll',onScroll);return;}
+          if(bottom.getBoundingClientRect().top<window.innerHeight){window.removeEventListener('scroll',onScroll);displayDiscountModal();}
+        };
+        window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+      }
+    }
     const revealOffer=()=>{
       if(current!==35){if(offerUnlockTimer)clearTimeout(offerUnlockTimer);offerUnlockTimer=null;return;}
       const remaining=OFFER_UNLOCK_MS-(Date.now()-startedAt);
@@ -369,6 +420,7 @@
       const belowVideo=root.querySelector('[data-gated-offer]');
       if(belowVideo){belowVideo.hidden=false;belowVideo.removeAttribute('aria-hidden');belowVideo.removeAttribute('inert');}
       root.querySelectorAll('[data-gated-cta]').forEach(slot=>{slot.hidden=false;});
+      enableDiscountTrigger();
     };
     revealOffer();
   }
@@ -505,10 +557,15 @@
       case 23:
         nextPage('E como você prefere <em>começar</em> seu treino?',`<div class="next-options">${nextOption('trainingIntensity','leve','Bem leve','🌱')}${nextOption('trainingIntensity','intermediario','Intermediário','🌿')}${nextOption('trainingIntensity','ativo','Mais ativo','⚡')}${nextOption('trainingIntensity','decidir','Prefiro que vocês decidam','💪')}</div>`,'Você pode mudar isso depois.');break;
       case 24:{
-        const variants={leve:['Bem leve','Você escolheu começar em um ritmo tranquilo.'],intermediario:['Intermediário','Você escolheu um ritmo equilibrado.'],ativo:['Mais ativo','Você escolheu uma rotina mais ativa.'],decidir:['Adaptável','Você prefere escolher a intensidade durante o programa.']};
+        const variants={leve:['Bem leve','Você começará com treinos adaptados ao seu nível atual, com uma progressão leve e consistente.'],intermediario:['Intermediário','Você começará com treinos adaptados ao seu nível atual, mas com progressão RÁPIDA e CONSTANTE.'],ativo:['Mais ativo','Você começará com treinos adaptados ao seu nível atual, com progressão FORTE e CONSTANTE.'],decidir:['Intermediário','Você começará com treinos adaptados ao seu nível atual, mas com progressão RÁPIDA e CONSTANTE.']};
         const [label,desc]=variants[answers.trainingIntensity]||variants.decidir;
-        const week=[['SEMANA 1','male-fitness.webp','Conheça os movimentos e explore seu ritmo.'],['SEMANA 2','male-lunge.webp','Inclua mobilidade e repetições adaptadas.'],['SEMANA 3','male-abs.webp','Acompanhe sua consistência e técnica.'],['SEMANA 4','male-stretch.webp','Continue seu hábito, se desejar.']];
-        nextPage('Ótimo, seu treino pode começar assim: <em>'+label+'</em>',`<div class="next-info-blue">${desc} O aplicativo permite acompanhar os exercícios de forma progressiva.</div><div class="next-week-grid">${week.map(([w,img,body])=>`<div class="next-week-card">${photoNext(img,'',w)}<strong>${w}</strong><p>${body}</p></div>`).join('')}</div>`,'',nextFooter(),'next-weeks-stage');break;}
+        const week=[
+          ['SEMANA 1','week-1.webp','Corpo começa a despertar.','Postura, respiração e energia começam a melhorar.'],
+          ['SEMANA 2','week-2.webp','Dores e rigidez começam a ceder.','Você sente mais disposição no dia a dia.'],
+          ['SEMANA 3','week-3.webp','Barriga começa a reduzir, corpo fica mais firme.','Roupas começam a servir melhor.'],
+          ['SEMANA 4','week-4.webp','Corpo definido e abdômen trincado, energia dos 20, e até sua esposa nota a diferença.','']
+        ];
+        nextPage('Ótimo, a intensidade do seu treino será: <em>'+label+'</em>',`<div class="next-info-blue">${desc}</div><div class="next-week-grid" aria-label="Etapas do programa">${week.map(([w,img,heading,body],i)=>`<article class="next-week-card week${i+1}">${photoNext(img,'next-week-photo',w + ' - ' + heading)}<div class="next-week-content"><strong>${w}</strong><h2>${heading}</h2>${body?`<p>${body}</p>`:''}</div></article>`).join('')}</div>`,'',nextFooter('Continuar →'),'next-weeks-stage');break;}
       case 25:case 26:case 27:nextMeasure(current);break;
       case 28:
         nextPage('Quanto de água <em>você bebe diariamente?</em>',`<div class="next-options">${nextOption('waterIntake','cha','Eu só tomo café ou chá','☕')}${nextOption('waterIntake','pouca','Bebo pouca água','💧')}${nextOption('waterIntake','moderada','Uma boa quantidade','💦')}${nextOption('waterIntake','boa','Bebo água o dia inteiro','🚰')}</div>`);break;
@@ -522,15 +579,12 @@
       case 32:{
         nextPage('É assim que a <em>evolução da sua rotina</em> pode acontecer',`<p class="next-story">Seu progresso depende de frequência, intensidade e adaptação. Este gráfico é uma <strong>ilustração</strong> da construção de um hábito, não uma previsão de resultados.</p><div class="next-chart-card"><p>Possíveis trajetórias de constância</p><svg viewBox="0 0 340 240" role="img" aria-label="Gráfico ilustrativo de duas rotinas: constância crescente e rotina irregular"><line x1="25" y1="195" x2="325" y2="195" stroke="#dce3ef"/><line x1="25" y1="38" x2="25" y2="195" stroke="#dce3ef"/><path class="next-graph-green" d="M25 195 C85 195 98 155 137 142 S205 45 255 50 S305 48 320 45" fill="none" stroke="#17ba89" stroke-width="4"/><path class="next-graph-red" d="M25 195 C93 193 105 191 158 190 S264 186 320 178" fill="none" stroke="#ef505d" stroke-width="4"/><circle cx="25" cy="195" r="5" fill="#fff" stroke="#087cff" stroke-width="3"/><circle cx="320" cy="45" r="5" fill="#fff" stroke="#17ba89" stroke-width="3"/><circle cx="320" cy="178" r="5" fill="#fff" stroke="#ef505d" stroke-width="3"/><rect x="180" y="66" width="139" height="27" rx="5" fill="#17ba89"/><text x="249" y="84" text-anchor="middle" font-size="10" font-weight="800" fill="white">Rotina consistente</text><rect x="179" y="148" width="141" height="25" rx="5" fill="#ef505d"/><text x="249" y="164" text-anchor="middle" font-size="10" font-weight="800" fill="white">Rotina irregular</text><text x="27" y="221" font-size="12" font-weight="700" fill="#39404d">Início</text><text x="291" y="221" font-size="12" font-weight="700" fill="#39404d">Tempo</text></svg></div>`,'',nextFooter('Concluir meu teste →'),'next-chart-stage');break;}
       case 33:{
-        // Arquivos originais da pasta "imagens" do Drive, já incluídos no ZIP.
-        // Pares visuais ilustrativos: não são fotos de evolução da mesma pessoa.
-        const comparisons=[
-          ['body-large.webp','body-average.webp','Perfis corporais'],
-          ['body-average2.webp','body-toned.webp','Força e composição corporal'],
-          ['body-slim.webp','body-dream.webp','Objetivos diferentes']
-        ];
-        const cards=comparisons.map(([left,right,caption],i)=>`<figure class="stage33-pair"><div class="stage33-pair-images"><div><span>Referência inicial</span>${photoNext(left,'stage33-compare-image','Exemplo ilustrativo de perfil inicial')}</div><div><span>Objetivo ilustrativo</span>${photoNext(right,'stage33-compare-image','Exemplo ilustrativo de objetivo físico')}</div></div><figcaption>${caption}</figcaption></figure>`).join('');
-        nextPage('Aguarde, estamos organizando <em>seu plano personalizado</em>',`<div class="stage33-progress" data-stage33-progress role="progressbar" aria-label="Preparação do resumo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="stage33-progress-fill" data-stage33-fill></div></div><p class="stage33-percent" data-stage33-percent aria-live="off">0%</p><div class="stage33-comparison-list">${cards}</div><p class="stage33-disclaimer">Imagens ilustrativas de perfis e objetivos físicos. Não são fotos de antes e depois de participantes nem promessa de resultado.</p><p class="stage33-automatic">Ao concluir o carregamento, você será direcionado automaticamente ao seu resumo.</p>`,'','','next-loading-stage stage33-gallery');
+        // Uma única tela: a barra e as três imagens alternam automaticamente.
+        // Imagens fornecidas pelo proprietário, mostradas como exemplos visuais,
+        // sem atribuir resultados físicos ao programa.
+        const photos=['antes-depois-1.webp','antes-depois-2.webp','antes-depois-3.webp'];
+        const slides=photos.map((file,i)=>`<figure class="stage33-photo-slide ${i===0?'is-active':''}" data-stage33-slide="${i}" aria-hidden="${i!==0}"><img src="/pagina/images/${file}" alt="Comparação visual ilustrativa ${i+1}" width="800" height="800" loading="eager" decoding="async"><figcaption>Comparação visual ilustrativa ${i+1} de 3</figcaption></figure>`).join('');
+        nextPage('Aguarde, estamos criando <em>seu plano personalizado</em>',`<div class="stage33-progress" data-stage33-progress role="progressbar" aria-label="Progresso do carregamento" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="stage33-progress-fill" data-stage33-fill></div></div><p class="stage33-percent" data-stage33-percent aria-live="off">0%</p><div class="stage33-single-gallery" aria-label="Imagens durante o carregamento">${slides}</div><p class="stage33-disclaimer">Imagens ilustrativas. Não representam resultados comprovados deste programa; os resultados individuais variam.</p><p class="stage33-automatic">Ao chegar a 100%, o quiz avança automaticamente para a próxima etapa.</p>`,'','','next-loading-stage stage33-gallery');
         break;}
       case 34:{
         const h=Number(answers.height),w=Number(answers.currentWeight),goal=Number(answers.targetWeight);
@@ -539,20 +593,27 @@
         const bmiStr=bmi!==null?bmi.toFixed(1).replace('.',','):'—';
         const marker=bmi===null?50:Math.max(0,Math.min(100,((bmi-15)/25)*100));
         if(nextResultStage==="summary"){
-          const weightText=Number.isFinite(w)&&w>0?`${Math.round(w)} kg`:'não informado';
-          const goalText=Number.isFinite(goal)&&goal>0?`${Math.round(goal)} kg`:'não informado';
-          nextPage('Seu <em>resumo está pronto!</em>',`<p class="next-story">Você informou peso atual de <strong>${escapeHTML(weightText)}</strong> e referência de <strong>${escapeHTML(goalText)}</strong>.</p><div class="next-summary-graph"><h2>Suas medidas de referência</h2><svg class="next-personal-chart" viewBox="0 0 340 165" role="img" aria-label="Comparação visual do peso informado e do peso de referência escolhido"><line x1="25" x2="315" y1="125" y2="125" stroke="#dae2f1" stroke-width="1"/><rect x="80" y="${Math.round(125-88*(w>0?w:70)/Math.max(w>0?w:70,goal>0?goal:70))}" width="56" height="${Math.round(88*(w>0?w:70)/Math.max(w>0?w:70,goal>0?goal:70))}" rx="7" fill="#087cff" class="next-weight-bar"/><rect x="209" y="${Math.round(125-88*(goal>0?goal:70)/Math.max(w>0?w:70,goal>0?goal:70))}" width="56" height="${Math.round(88*(goal>0?goal:70)/Math.max(w>0?w:70,goal>0?goal:70))}" rx="7" fill="#57aef0" class="next-weight-bar"/><text x="108" y="143" font-size="11" fill="#485262" text-anchor="middle">Atual</text><text x="237" y="143" font-size="11" fill="#485262" text-anchor="middle">Referência</text><text x="108" y="25" font-size="13" font-weight="800" fill="#1f2a39" text-anchor="middle">${Math.round(w>0?w:70)} kg</text><text x="237" y="25" font-size="13" font-weight="800" fill="#1f2a39" text-anchor="middle">${Math.round(goal>0?goal:70)} kg</text></svg><div class="next-summary-bars"><div><span>Peso atual</span><strong>${escapeHTML(weightText)}</strong></div><div><span>Peso de referência</span><strong>${escapeHTML(goalText)}</strong></div></div><p>Esses valores são as respostas informadas por você, não uma previsão de perda de peso.</p></div><p class="next-story">Conheça agora seu resumo de perfil antes de ver a oferta.</p>`,'',nextFooter('Continuar →',false,'data-show-profile'),'next-summary-stage');
+          const weightText=Number.isFinite(w)&&w>0?`${Math.round(w)}kg`:'—';
+          const goalText=Number.isFinite(goal)&&goal>0?`${Math.round(goal)}kg`:'—';
+          const delta=(w>0&&goal>0)?Math.abs(w-goal):0;
+          // Curva indicativa, sem atribuição de resultados ou prazo garantido.
+          nextPage('Com base em suas respostas,',`<h2 class="finish-hero-heading">Sua referência de peso é <em>${escapeHTML(goalText)}</em></h2><p class="finish-subtle">Acompanhe sua evolução em seu próprio ritmo.</p><div class="finish-curve-card"><svg viewBox="0 0 350 225" role="img" aria-label="Gráfico ilustrativo entre peso atual e objetivo informado; não é previsão"><defs><linearGradient id="finish-grad" x1="0" x2="1" y1="0" y2="0"><stop offset="0%" stop-color="#ef8080"/><stop offset="60%" stop-color="#ffd05c"/><stop offset="100%" stop-color="#54cd8c"/></linearGradient></defs><path d="M20 42 C105 44 112 116 178 145 S270 178 330 178 L330 196 L20 196Z" fill="url(#finish-grad)" opacity=".67"/><path class="finish-curve-stroke" d="M20 42 C105 44 112 116 178 145 S270 178 330 178" stroke="url(#finish-grad)" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="82" cy="62" r="7" fill="#ed3838" stroke="#fff" stroke-width="5"/><circle cx="277" cy="176" r="7" fill="#eabf13" stroke="#fff" stroke-width="5"/><rect x="7" y="5" rx="7" width="144" height="29" fill="#e72c2c"/><text x="79" y="24" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">Agora ${escapeHTML(weightText)}</text><rect x="210" y="141" rx="7" width="132" height="28" fill="#f6bd20"/><text x="276" y="159" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">Meta ${escapeHTML(goalText)}</text><text x="25" y="218" font-size="12" fill="#555">Hoje</text><text x="295" y="218" font-size="12" fill="#555">Objetivo</text></svg><p>Comparação visual ilustrativa entre as medidas que você informou. Não prevê quanto tempo a mudança levará.</p></div><h2 class="finish-emphasis">Seu programa de 21 dias está quase pronto!</h2><p class="finish-subtle">O plano apresenta uma sequência para começar a se exercitar em casa, respeitando seu ritmo.</p>`,'',nextFooter('Continuar →',false,'data-show-profile'),'next-summary-stage finish-summary-stage');
         } else if(nextResultStage==="profile") {
-          nextPage('Seu <em>perfil está pronto!</em>',`<div class="next-profile-card"><h2>Índice de Massa Corporal (IMC)</h2><strong class="next-bmi">${bmiStr}</strong><div class="next-bmi-scale"><i style="left:${marker}%"></i></div><div class="next-bmi-labels"><span>15</span><span>18,5</span><span>25</span><span>30</span><span>40</span></div><small>${hasBody?'IMC calculado com os valores fornecidos. Não avalia composição corporal isoladamente.':'Informe altura e peso para calcular o IMC.'}</small></div><div class="next-profile-card"><h2>Sua rotina</h2><p>Preferência de treino: <strong>${escapeHTML(answers.trainingIntensity||'adaptável')}</strong></p><p>Atividade diária: <strong>${escapeHTML(answers.dailyActivity||'não informada')}</strong></p><p>Seu programa oferece exercícios progressivos para fazer em casa.</p></div><div class="next-info-blue">O quiz apresenta sugestões gerais e não substitui avaliação profissional de saúde.</div>`,'',nextFooter('Continuar →',false,'data-next-result'),'next-profile-stage');
+          const classBmi=bmi===null?'Não calculado':bmi<18.5?'Abaixo do peso':bmi<25?'Faixa habitual':bmi<30?'Acima da faixa habitual':'Acima da faixa habitual';
+          const activity=answers.dailyActivity==='ativo'?'Ativo':answers.dailyActivity==='pouco'?'Moderadamente ativo':answers.dailyActivity==='parado'?'Sedentário':'Não informado';
+          const frequency=answers.exerciseFrequency==='diario'?'Frequente':answers.exerciseFrequency==='semanal'?'Algumas vezes por semana':answers.exerciseFrequency==='mensal'?'Poucas vezes ao mês':answers.exerciseFrequency==='nunca'?'Iniciante':'Conforme suas respostas';
+          const pattern=answers.weightPattern==='ganhar'?'Relata dificuldade para ganhar peso':answers.weightPattern==='lento'?'Relata perda de peso mais lenta':answers.weightPattern==='oscilante'?'Relata variações frequentes':'Não informado';
+          nextPage('Seu perfil está pronto:',`<section class="finish-profile-card"><h2>Índice de Massa Corporal (IMC)</h2><div class="finish-bmi-value">Você — ${bmiStr}</div><div class="finish-bmi-ticks"><span>15</span><span>18,5</span><span>25</span><span>30</span><span>40</span></div><div class="next-bmi-scale"><i style="left:${marker}%"></i></div><div class="finish-bmi-ticks"><span>BAIXO</span><span>NORMAL</span><span>ACIMA</span><span>ALTO</span></div><p>${classBmi}. O IMC não distingue gordura de massa muscular.</p></section><div class="finish-info-note"><strong>Informações sobre seu condicionamento</strong><p>Seu ponto de partida ajuda a escolher exercícios adequados à sua experiência e disponibilidade.</p></div><section class="finish-profile-card finish-profile-rows"><div><span>♧</span><p>Estilo de vida<strong>${activity}</strong></p></div><div><span>♙</span><p>Nível de condicionamento<strong>${frequency}</strong></p></div><div><span>↝</span><p>Variação de peso<strong>${pattern}</strong></p></div></section>`,'',nextFooter('Continuar →',false,'data-next-result'),'next-profile-stage finish-profile-stage');
         } else if(nextResultStage==="wellness") {
-          nextPage('Descubra uma rotina de <em>movimento e bem-estar</em>',`<img class="offer-prep-image" src="/pagina/images/male-positive.webp" alt="Ilustração de benefícios de uma rotina de movimento" loading="lazy"><p class="next-story">Movimentar-se de maneira regular pode ser uma parte importante dos cuidados com a saúde. O programa reúne exercícios de força e mobilidade para fazer em casa.</p><div class="next-info-blue">Cada pessoa evolui no próprio ritmo. Não há promessa de alteração hormonal ou tratamento de saúde.</div>`,'',nextFooter('Continuar →',false,'data-next-result'),'next-story-page');
+          nextPage('',`<img class="finish-couple-photo" src="/pagina/images/final-wellness-couple.webp" alt="Casal em ambiente doméstico — imagem ilustrativa" width="440" height="330" loading="eager"><h2 class="finish-hero-heading">Calistenia Asiática para fortalecer sua <em>energia e disposição</em></h2><p class="finish-subtle">Incluir movimento na rotina pode contribuir para força, mobilidade e bem-estar. Cada pessoa avança no próprio ritmo.</p><div class="finish-info-note"><strong>Exercícios no seu ritmo</strong><p>Conheça os movimentos do programa e adapte a prática às suas necessidades, sem precisar de equipamentos de academia.</p></div><div class="finish-wellness-list"><span>✓ Aulas organizadas para acompanhar no celular</span><span>✓ Exercícios de força e mobilidade</span><span>✓ Progressão conforme sua experiência</span></div>`,'',nextFooter('QUERO COMEÇAR AGORA →',false,'data-next-result'),'next-story-page finish-wellness-stage');
         } else if(nextResultStage==="confidence") {
-          nextPage('Quão <em>confiante</em> você está para começar?',`<div class="next-options">${nextOption('confidence','muito','Muito, quero começar!','🚀')}${nextOption('confidence','tentar','Estou disposto a tentar algo novo!','✅')}${nextOption('confidence','duvida','Ainda tenho dúvidas, mas quero conhecer','💪')}</div>`,'Escolha a resposta que combina mais com você.');
+          nextPage('Quão <em>confiante</em> você está para começar a treinar?',`<div class="next-options">${nextOption('confidence','muito','Muito, eu sei que consigo!','🚀')}${nextOption('confidence','tentar','Estou disposto a tentar algo novo!','✅')}${nextOption('confidence','duvida','Não tenho certeza, mas quero tentar','💪')}</div>`,'Escolha a opção que melhor representa você.','', 'finish-confidence-stage');
         } else if(nextResultStage==="preview") {
           const currentW=Number(answers.currentWeight),targetW=Number(answers.targetWeight);
-          const weightText=Number.isFinite(currentW)&&currentW>0?Math.round(currentW)+' kg':'Não informado';
-          const targetText=Number.isFinite(targetW)&&targetW>0?Math.round(targetW)+' kg':'Não informado';
-          nextPage('Seu plano de Calistenia Asiática está <em>quase pronto!</em>',`<div class="offer-plan-preview"><div class="offer-plan-images"><div><span>Seu ponto de partida</span>${photoNext('male-fitness.webp')}</div><div><span>Seu objetivo</span>${photoNext('male-hero.webp')}</div></div><div class="offer-plan-columns"><div><small>Peso atual</small><strong>${escapeHTML(weightText)}</strong><small>Rotina de exercícios</small><strong>${escapeHTML(answers.dailyActivity||'Informada no quiz')}</strong></div><div><small>Peso de referência</small><strong>${escapeHTML(targetText)}</strong><small>Foco do programa</small><strong>Força e mobilidade</strong></div></div></div><div class="next-info-blue">As imagens são ilustrativas. A aparência física e os resultados não podem ser previstos pelo quiz.</div>`,'',nextFooter('CONTINUAR',false,'data-next-result'),'next-summary-stage');
+          const weightText=Number.isFinite(currentW)&&currentW>0?Math.round(currentW)+' kg':'—';
+          const targetText=Number.isFinite(targetW)&&targetW>0?Math.round(targetW)+' kg':'—';
+          const activity=answers.dailyActivity==='ativo'?'Ativo':answers.dailyActivity==='pouco'?'Moderado':answers.dailyActivity==='parado'?'Sedentário':'Não informado';
+          nextPage('Seu plano de Calistenia Asiática está <em>quase pronto!</em>',`<section class="finish-plan-card"><div class="finish-plan-labels"><span>Agora</span><span>Seu objetivo</span></div><img class="finish-plan-image" src="/pagina/images/final-goal-comparison.webp" alt="Comparação ilustrativa de um homem antes e após desenvolver hábitos de movimento" width="560" height="285" loading="eager"><div class="finish-plan-grid"><div><small>Peso atual</small><strong>${escapeHTML(weightText)}</strong><small>Rotina atual</small><strong>${activity}</strong><small>Condicionamento</small><strong>Seu ponto de partida</strong><div class="finish-meter"><i></i></div></div><div><small>Peso desejado</small><strong>${escapeHTML(targetText)}</strong><small>Foco do programa</small><strong>Força e mobilidade</strong><small>Condicionamento</small><strong>Progressivo</strong><div class="finish-meter full"><i></i></div></div></div></section><div class="finish-info-note"><strong>Foco do programa</strong><p>Exercícios organizados para desenvolver força, resistência e mobilidade no seu ritmo.</p></div><div class="finish-info-note muted">As imagens são ilustrativas. O quiz não prevê mudanças físicas específicas nem uma data garantida para resultados.</div>`,'',nextFooter('CONTINUAR',false,'data-next-result'),'next-summary-stage finish-preview-stage');
         }
         break;}
     }
@@ -576,13 +637,20 @@
       if(fill)fill.style.width=progress+'%';
       if(value)value.textContent=progress+'%';
       container.setAttribute('aria-valuenow',String(progress));
+      // Troca somente a imagem visível, sincronizada com o percentual.
+      const activeSlide=Math.min(2,Math.floor(progress / 34));
+      root.querySelectorAll('[data-stage33-slide]').forEach((slide,i)=>{
+        const show=i===activeSlide;
+        slide.classList.toggle('is-active',show);
+        slide.setAttribute('aria-hidden',show?'false':'true');
+      });
       if(progress>=100&&!moved){moved=true;stopStage33Progress();stage33Redirect=setTimeout(()=>{stage33Redirect=null;if(current===33)goTo(34);},120);}
     };
     update();stage33Ticker=setInterval(update,75);
   }
   function render() {
     stopStage33Progress();
-    document.title='calisteniasiatica';
+    document.title='Calistenia Asiática para Homens | Atlas';
     if(current!==35 && offerUnlockTimer){clearTimeout(offerUnlockTimer);offerUnlockTimer=null;}
     if(current===1){
       intro();

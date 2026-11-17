@@ -312,7 +312,6 @@
     const payCard=()=>`<section class="offer-blue-price" aria-label="Condição de compra"><p class="offer-blue-price-note">Acesso ao programa</p><div class="offer-blue-price-number"><small>por</small> R$ 57,90</div><p>Pagamento único • acesso ao programa de 21 dias</p><p class="offer-blue-safe">🔒 Pagamento processado pela Mivvo</p></section>`;
     const unlockArea=()=>`<div class="offer-gated" data-gated-cta hidden>${buy()}</div>`;
     wrap(`<main class="offer-blue-page">
-      <div class="offer-blue-top"><span>CALISTENIA <small>by Atlas</small></span></div>
       <div class="offer-blue-body">
         <h1>Seu plano de <strong>Calistenia Asiática</strong> está <em>pronto!</em></h1>
         <p class="offer-blue-sub">Assista ao vídeo abaixo e veja como funciona o programa.</p>

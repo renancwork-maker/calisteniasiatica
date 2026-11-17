@@ -1,14 +1,14 @@
-/* Fernanda Martins • Calistenia Asiática em Casa — navegação leve sem bibliotecas pesadas.
+/* Atlas • Calistenia Asiática em Casa — navegação leve sem bibliotecas pesadas.
    O pacote original não continha o módulo de etapas; perguntas reconstruídas para um fluxo funcional.
-   Checkout único: WIAPY. Vídeo único: VTurb informado pelo proprietário. */
+   Checkout único: MIVVO. Vídeo único: VTurb informado pelo proprietário. */
 (function () {
   'use strict';
   const root = document.getElementById('root');
   if (!root) return;
-  const CHECKOUT_URL = 'https://pay.wiapy.com/e6WX0PxZmlLo';
-  const VTURB_SCRIPT = 'https://scripts.converteai.net/e040da1c-3494-4229-81c5-b7e4caf21ba7/players/6af495416685e101a472e87e/v4/player.js';
+  const CHECKOUT_URL = 'https://app.mivvo.com.br/checkout/01a1e6d7-3f74-78a3-ad79-1e15491863ed';
+  const VTURB_SCRIPT = 'https://scripts.converteai.net/e040da1c-3494-4229-81c5-b7e4caf21ba7/players/6afba5f7d4334aee81183338/v4/player.js';
   const VTURB_LIB = 'https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js';
-  const VTURB_STREAM = 'https://cdn.converteai.net/e040da1c-3494-4229-81c5-b7e4caf21ba7/6af4951bdd977102737c257c/main.m3u8';
+  const VTURB_STREAM = 'https://cdn.converteai.net/e040da1c-3494-4229-81c5-b7e4caf21ba7/6afba5ebdac166e521958649/main.m3u8';
   const STORAGE_KEY = 'atlas_calisthenia_21d_answers';
   const OFFER_START_KEY = 'atlas_calisthenia_21d_offer_started';
   const OFFER_UNLOCK_MS = 323000; // 5m23s após abrir a oferta
@@ -57,7 +57,7 @@
     10:opt('bodyType','Como você descreve seu corpo atualmente?','Não existe resposta certa ou errada.',[['magro','Mais magro'],['medio','Intermediário'],['encorpado','Mais encorpado'],['pular','Prefiro não responder']]),
     11:opt('dreamBody','Que evolução você gostaria de perceber?','Seu objetivo ajuda a organizar a sua jornada.',[['forca','Mais firmeza e força'],['energia','Mais energia'],['mobilidade','Mais flexibilidade e mobilidade'],['habito','Uma rotina constante']]),
     12:opt('fitnessHistory','Como está sua rotina de exercícios?','Queremos entender seu ponto de partida.',[['nunca','Não tenho uma rotina'],['raramente','Me exercito raramente'],['asvezes','Algumas vezes por semana'],['frequente','Já treino com frequência']]),
-    13:opt('limitations','Você precisa adaptar algum movimento?','Selecione tudo o que for relevante. Se tiver dúvidas sobre sua saúde, converse com um profissional de saúde antes de começar.',[['joelho','Tenho desconforto nos joelhos'],['lombar','Tenho desconforto nas costas'],['ombro','Tenho desconforto nos ombros'],['sem','Não tenho limitações conhecidas']],true),
+    13:opt('limitations','Você sente desconforto em algum movimento?','Selecione tudo o que for relevante. Se tiver dúvidas sobre sua saúde, converse com um profissional de saúde antes de começar.',[['joelho','Tenho desconforto nos joelhos'],['lombar','Tenho desconforto nas costas'],['ombro','Tenho desconforto nos ombros'],['sem','Não tenho limitações conhecidas']],true),
     14:opt('comfortLevel','Como você se sente treinando em casa?','É importante que os movimentos sejam confortáveis para você.',[['iniciante','Quero começar bem devagar'],['moderado','Tenho certa familiaridade'],['avancado','Já me sinto confiante']]),
     15:page('Tudo bem avançar no seu ritmo','Com exercícios de intensidade progressiva, você pode descobrir o que funciona melhor para sua rotina. Pausas e adaptações fazem parte do processo.'),
     16:{type:'number',key:'height',title:'Qual é a sua altura?',desc:'Essa informação é opcional para personalizar seu resumo.',initial:165,min:120,max:220,unit:'cm'},
@@ -84,18 +84,18 @@
   const A='/pagina/images/';
   const picture=(file,cls='',attrs='')=>`<img class="${cls}" src="${A}${file}" loading="lazy" decoding="async" alt="" ${attrs}>`;
   const reference={
-    3:{key:'calistheniaExperience',type:'single',title:'Você já experimentou exercícios de calistenia?',items:['Sim','Não']},
+    3:{key:'calistheniaExperience',type:'single',title:'Você já experimentou a calistenia asiática?',items:['Sim','Não']},
     5:{key:'mainGoal',type:'single',title:'Qual é seu <em>principal objetivo</em>?',items:['Perder peso','Desenvolver músculos','Manter o peso e ficar em forma','Melhorar a aptidão física'],symbols:['⚖','♧','♙','ϟ']},
     6:{key:'additionalGoals',type:'multi',title:'O que mais você espera alcançar com este plano?',subtitle:'Pode escolher várias opções',items:['Aumentar a energia','Melhorar o sono','Reduzir o estresse','Melhorar a postura e a mobilidade','Desenvolver flexibilidade'],symbols:['▣','☾','♧','✣','✧']},
-    7:{key:'bodyZones',type:'multi',title:'Quais são as zonas que mais a preocupam?',subtitle:'Por favor, selecione todas as opções aplicáveis',items:['Melhorar o corpo inteiro','Queixo duplo','Braços flácidos','Seios caídos','Gordura nos joelhos','Traseiro de alforje','Nádegas flácidas','Parte interna da coxa']},
-    8:{key:'targetZones',type:'multi',title:'Quais são as suas zonas alvo?',subtitle:'Escolha todas as opções aplicáveis',items:['Barriga','Bunda','Pernas','Peito','Braços','Costas']},
-    10:{key:'bodyType',type:'single',title:'Como você descreveria o seu corpo atualmente?',items:['Magra','Falsa Magra','Acima do peso','Sobrepeso']},
-    11:{key:'dreamBody',type:'single',title:'Qual é o corpo dos seus sonhos?',items:['Curvado','Magro','Em forma','Tonificado','Estou bem com meu corpo']},
+    7:{key:'bodyZones',type:'multi',title:'Quais regiões do corpo você mais quer trabalhar?',subtitle:'Por favor, selecione todas as opções aplicáveis',items:['Melhorar o corpo inteiro','Abdômen','Peitoral','Ombros','Costas','Braços','Pernas','Joelhos']},
+    8:{key:'targetZones',type:'multi',title:'Quais regiões você quer priorizar?',subtitle:'Escolha todas as opções aplicáveis',items:['Abdômen','Peitoral','Pernas','Ombros','Braços','Costas']},
+    10:{key:'bodyType',type:'single',title:'Como você descreveria o seu corpo atualmente?',items:['Magro','Peso intermediário','Acima do peso','Sobrepeso']},
+    11:{key:'dreamBody',type:'single',title:'Qual resultado físico você busca?',items:['Mais definido','Mais forte','Em forma','Tonificado','Estou bem com meu corpo']},
     12:{key:'fitnessHistory',type:'single',title:'Há quanto tempo você estava na melhor forma da sua vida?',items:['1 a 2 anos atrás','3 a 5 anos atrás','Mais de 5 anos atrás','Nunca']},
     13:{key:'limitations',type:'multi',title:'Você tem dificuldades com algum dos seguintes itens?',subtitle:'Por favor, selecione todas as opções aplicáveis',items:['Costas sensíveis','Joelhos sensíveis','Quadril sensível','Ombros e braços','Panturrilhas e tornozelos','Nenhuma das opções acima']},
-    14:{key:'comfortLevel',type:'single',title:'Você se sente confortável ao se exercitar?',items:['Sinto dor/Desconforto','Sinto alguma dificuldade','Sinto-me confortável'],symbols:['😣','😳','😊']}
+    14:{key:'comfortLevel',type:'single',title:'Como você se sente ao se exercitar?',items:['Sinto dor/Desconforto','Sinto alguma dificuldade','Sinto-me confortável'],symbols:['😣','😳','😊']}
   };
-  function hdr(back=true){return `<div class="page-top"><header class="site-header">${back?'<button type="button" class="back" data-back aria-label="Voltar">‹</button>':''}<span class="brand">CALISTENIA</span><span class="by">por Fernanda Martins</span></header>${back?`<div class="progress"><i style="width:${Math.round(current/35*100)}%"></i></div>`:''}</div>`;}
+  function hdr(back=true){return `<div class="page-top"><header class="site-header">${back?'<button type="button" class="back" data-back aria-label="Voltar">‹</button>':''}<span class="brand">CALISTENIA</span><span class="by">by Atlas</span></header>${back?`<div class="progress"><i style="width:${Math.round(current/35*100)}%"></i></div>`:''}</div>`;}
   function shell(markup,cls=''){root.innerHTML=`<div class="page ${cls}">${hdr(current>1)}${markup}</div>`;}
   function mainStage(inner,cls='',bottom=''){shell(`<main class="reference-stage ${cls}">${inner}${bottom?`<div class="bottom-action">${bottom}</div>`:''}</main>`,'reference-page');}
   const continueButton=(text='Continuar')=>`<button class="primary" type="button" data-next>${text}</button>`;
@@ -107,11 +107,16 @@
     return ref.items.map((label,i)=>{
       const on=multi?Array.isArray(selected)&&selected.includes(String(i)):selected===String(i);
       const icon=ref.symbols?`<span class="choice-icon">${ref.symbols[i]}</span>`:'';
-      const step7Thumbs=[null,'preocupacao-1.webp','preocupacao-2.webp','preocupacao-3.webp','preocupacao-5.webp','preocupacao-6.webp','preocupacao-7.webp','preocupacao-8.webp'];
+      const step7Thumbs=[null,'region-belly.webp','region-chest.webp','region-shoulder.webp','region-back.webp','male-dip.webp','region-legs.webp','region-knee.webp'];
+      const step8Thumbs=['region-belly.webp','region-chest.webp','region-legs.webp','region-shoulder.webp','male-dip.webp','region-back.webp'];
+      const step11Thumbs=['body-dream.webp','goal-muscle.webp','goal-fitness.webp','body-toned.webp','body-average.webp'];
+      const step13Thumbs=['region-back.webp','region-knee.webp','region-legs.webp','region-shoulder.webp','region-knee.webp'];
+      const step5Thumbs=['goal-loss.webp','goal-muscle.webp','body-dream.webp','goal-fitness.webp'];
       const thumb=current===7&&i>0?picture(step7Thumbs[i],'choice-thumb'):
-       current===8?picture('zona-'+(i+1)+'.webp','choice-thumb'):
-       current===11?picture('corpo-sonho-'+(i+1)+'.webp','choice-thumb'):
-       current===13&&i<5?picture('dor-'+(i+1)+'.webp','choice-thumb'):'';
+       current===8?picture(step8Thumbs[i],'choice-thumb'):
+       current===11?picture(step11Thumbs[i],'choice-thumb'):
+       current===5?picture(step5Thumbs[i],'choice-thumb'):
+       current===13&&i<5?picture(step13Thumbs[i],'choice-thumb'):'';
       const mark=multi?`<span class="option-check" aria-hidden="true">${on?'✓':''}</span>`:(current===3?'':`<span class="option-arrow" aria-hidden="true">${current===14?'':'›'}</span>`);
       if(current===7&&i===0)return '';
       return `<button type="button" class="choice ref-choice ${on?'selected':''} ${current===7&&i===0?'plain-choice':''}" data-${multi?'multi':'single'}="${key}" data-value="${i}" aria-pressed="${on?'true':'false'}">${thumb||icon}<span class="choice-label">${label}</span>${mark}</button>`;
@@ -119,17 +124,17 @@
   }
   function renderReference(){
     if(current===2){
-      mainStage(`${picture('grupo-mulheres.webp','group-image','width="348" height="260" fetchpriority="high"')}<div class="group-message"><h1>Uma jornada de movimento no seu ritmo</h1><p>Conheça uma proposta de exercícios em casa, organizada para quem quer começar ou retomar uma rotina de movimentos.</p></div>`,'group-stage',continueButton('Continuar'));
+      mainStage(`${picture('male-group.webp','group-image','width="348" height="260" fetchpriority="high"')}<div class="group-message"><h1>Calistenia Asiática: comece no seu ritmo</h1><p>Conheça uma proposta de exercícios em casa, organizada para quem quer começar ou retomar uma rotina de movimentos.</p></div>`,'group-stage',continueButton('Continuar'));
       return;
     }
     if(current===4){
-      illustrationStep('exercicio-sofa.webp','Descubra movimentos simples para incluir na sua rotina.','A proposta reúne movimentos de força e mobilidade para fazer em casa, com adaptações conforme seu nível e suas possibilidades.','landscape-info','CONTINUAR');return;
+      illustrationStep('male-exercise.webp','Descubra movimentos simples para incluir na sua rotina.','A proposta reúne movimentos de força e mobilidade para fazer em casa, com adaptações conforme seu nível e suas possibilidades.','landscape-info','CONTINUAR');return;
     }
     if(current===9){
-      illustrationStep('mulher-7-minutos.webp','Movimentos para encaixar na sua rotina, sem sair de casa!','Conheça exercícios de calistenia em casa com orientações para adaptar os movimentos ao seu nível. O tempo de cada sessão pode variar conforme a atividade.','short-info','Continuar');return;
+      illustrationStep('male-app.webp','Treinos organizados para acompanhar pelo celular','Conheça exercícios de calistenia em casa com orientações para adaptar os movimentos ao seu nível. O tempo de cada sessão pode variar conforme a atividade.','short-info','Continuar');return;
     }
     if(current===15){
-      illustrationStep('mulher-positivo.webp','Nós cuidamos de você!','Adaptamos seu programa com alternativas para promover movimentos seguros e suaves. Caso sinta dor, respeite seus limites e procure orientação profissional.','short-info','Continuar');return;
+      illustrationStep('male-positive.webp','O seu ritmo faz parte do processo!','Adaptamos seu programa com alternativas para promover movimentos seguros e suaves. Caso sinta dor, respeite seus limites e procure orientação profissional.','short-info','Continuar');return;
     }
     if(current>=16&&current<=18){return renderSlider();}
     if(current===19){
@@ -139,14 +144,14 @@
     const q=reference[current];if(!q)return;
     const choices=optionsFor(q);
     if(current===3){
-      mainStage(`<div class="photo-form"><h1>${q.title}</h1><div class="photo-form-choices">${choices}</div>${picture('foco-mulher-quiz.webp','quiz-woman','width="203" height="449"')}</div>`,'photo-stage');return;
+      mainStage(`<div class="photo-form"><h1>${q.title}</h1><div class="photo-form-choices">${choices}</div>${picture('male-hero.webp','quiz-woman','width="203" height="449"')}</div>`,'photo-stage');return;
     }
     if(current===10){
-      const cards=q.items.map((title,i)=>{const sel=answers[q.key]===String(i);return `<button class="body-card ${sel?'selected':''}" data-single="${q.key}" data-value="${i}">${picture('corpo-atual-'+(i+1)+'.webp','body-card-img','width="148" height="140"')}<span>${title}</span></button>`;}).join('');
+      const cards=q.items.map((title,i)=>{const sel=answers[q.key]===String(i);return `<button class="body-card ${sel?'selected':''}" data-single="${q.key}" data-value="${i}">${picture(['body-slim.webp','body-average.webp','body-overweight.webp','body-large.webp'][i],'body-card-img','width="148" height="140"')}<span>${title}</span></button>`;}).join('');
       mainStage(`<div class="content-wrap grid-content"><h1>${q.title}</h1><div class="body-grid">${cards}</div></div>`,'body-stage');return;
     }
     if(current===12){
-      mainStage(`<div class="photo-form best-form-layout"><h1>${q.title}</h1><div class="photo-form-choices best-form-choices">${choices}</div>${picture('foco-melhor-fase.webp','quiz-woman best-form-image','width="320" height="478"')}</div>`,'photo-stage best-form-stage');return;
+      mainStage(`<div class="photo-form best-form-layout"><h1>${q.title}</h1><div class="photo-form-choices best-form-choices">${choices}</div>${picture('male-fitness.webp','quiz-woman best-form-image','width="320" height="478"')}</div>`,'photo-stage best-form-stage');return;
     }
     let selectionControl='';
     if(q.type==='multi'){
@@ -185,10 +190,10 @@
   function header(back=true) {return hdr(back);}
   function wrap(markup,cssClass='') { root.innerHTML=`<div class="page ${cssClass} slide-in">${header(current>1)}${markup}</div>`; }
   function introSplash() {
-    root.innerHTML=`<div class="page" data-boot-quiz-lead><header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">por Fernanda Martins</span></header><main class="quiz-lead-stage"><div class="quiz-lead-box"><h1>Calistenia Asiática: <span>a nova onda dos exercícios em casa!</span></h1><p>Conheça o programa de 21 dias, com exercícios de força e mobilidade que podem ser adaptados ao seu ritmo.</p><p>Os resultados variam de pessoa para pessoa. Responda às perguntas para conhecer a proposta.</p><button class="quiz-lead-button" type="button" data-begin-quiz>COMEÇAR O QUIZ</button></div></main></div>`;
+    root.innerHTML=`<div class="page" data-boot-quiz-lead><header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">by Atlas</span></header><main class="quiz-lead-stage"><div class="quiz-lead-box"><h1>Calistenia Asiática: <span>um novo jeito de treinar em casa</span></h1><p>Conheça o programa de 21 dias, com exercícios de força e mobilidade que podem ser adaptados ao seu ritmo.</p><p>Os resultados variam de pessoa para pessoa. Responda às perguntas para conhecer a proposta.</p><button class="quiz-lead-button" type="button" data-begin-quiz>COMEÇAR O QUIZ</button></div></main></div>`;
   }
   function intro() {
-    root.innerHTML=`<div class="page slide-in" data-boot-intro><header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">por Fernanda Martins</span></header><main class="main"><div class="title"><h1>Programa de Calistenia Asiática <span class="hl">para Mulheres</span></h1><p class="badge">QUIZ DE CALISTENIA</p><p class="question-age">Quantos anos você tem?</p></div><div class="btns">${['39 – 45','46 – 50','51 – 60','60+'].map(a=>`<button type="button" class="btn" data-age="${a}"><span>${a}</span><span class="arrow">➜</span></button>`).join('')}</div><img class="hero-img" src="/pagina/images/asian-woman-fitness.webp" srcset="/pagina/images/asian-woman-fitness-520.webp 520w,/pagina/images/asian-woman-fitness.webp 760w" sizes="(max-width: 768px) 230px,440px" alt="Mulher asiática praticando calistenia" width="650" height="1000" decoding="async" fetchpriority="high"><footer class="ftr">Ao escolher sua idade, concorda com nossos <a href="#">Termos de Serviço</a> e reconhece nossa <a href="#">Política de Privacidade</a> e <a href="#">Política de Cookies</a></footer></main></div>`;
+    root.innerHTML=`<div class="page slide-in" data-boot-intro><header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">by Atlas</span></header><main class="main"><div class="title"><h1>Programa de Calistenia Asiática <span class="hl">para Homens</span></h1><p class="badge">QUIZ DE CALISTENIA</p><p class="question-age">Quantos anos você tem?</p></div><div class="btns">${['18 – 29','30 – 39','40 – 49','50+'].map(a=>`<button type="button" class="btn" data-age="${a}"><span>${a}</span><span class="arrow">➜</span></button>`).join('')}</div><img class="hero-img" src="/pagina/images/male-hero.webp" sizes="(max-width: 768px) 230px,440px" alt="Praticante de calistenia asiática" width="650" height="1000" decoding="async" fetchpriority="high"><footer class="ftr">Ao escolher sua idade, concorda com nossos <a href="#">Termos de Serviço</a> e reconhece nossa <a href="#">Política de Privacidade</a> e <a href="#">Política de Cookies</a></footer></main></div>`;
   }
   function screenText(title,desc,content) {
     wrap(`<main class="stage"><h1>${escapeHTML(title)}</h1><p class="desc">${escapeHTML(desc)}</p>${content}</main>`);
@@ -209,22 +214,22 @@
     if(current===22){
       const opts=[['pouca','Bebo pouca água'],['moderada','Bebo uma quantidade moderada'],['boa','Costumo me hidratar bem']];
       const values=opts.map(([value,label])=>`<button type="button" class="choice ${answers.waterIntake===value?'selected':''}" data-single="waterIntake" data-value="${value}" aria-pressed="${answers.waterIntake===value?'true':'false'}"><span>${label}</span><span>›</span></button>`).join('');
-      wrap(`<main class="stage media-stage water-stage"><h1>Como está seu consumo de água?</h1><p class="desc">Pequenos hábitos também podem ajudar seu bem-estar.</p><div class="media-split"><div class="media-options">${values}</div><img class="media-figure water-figure" src="/pagina/images/foco-water-quiz.webp" alt="" width="1000" height="710" loading="lazy" decoding="async"></div></main>`);
+      wrap(`<main class="stage media-stage water-stage"><h1>Como está seu consumo de água?</h1><p class="desc">A hidratação faz parte da rotina de exercícios.</p><div class="media-split"><div class="media-options">${values}</div><img class="media-figure water-figure" src="/pagina/images/hidratacao.svg" alt="Ilustração de um copo de água" width="1000" height="710" loading="lazy" decoding="async"></div></main>`);
       return;
     }
     if(current===23){
       const opts=[['menos6','Menos de 6 horas'],['6a7','Entre 6 e 7 horas'],['7a9','Entre 7 e 9 horas'],['mais9','Mais de 9 horas']];
       const values=opts.map(([value,label])=>`<button type="button" class="sleep-card ${answers.sleepDuration===value?'selected':''}" data-single="sleepDuration" data-value="${value}" aria-pressed="${answers.sleepDuration===value?'true':'false'}"><span>${label}</span></button>`).join('');
-      wrap(`<main class="stage sleep-stage"><h1>Quantas horas você costuma dormir?</h1><img class="sleep-image" src="/pagina/images/sleep-quiz.webp" alt="" width="671" height="1000" loading="lazy" decoding="async"><div class="sleep-grid">${values}</div></main>`);
+      wrap(`<main class="stage sleep-stage"><h1>Quantas horas você costuma dormir?</h1><img class="sleep-image" src="/pagina/images/sono.svg" alt="Ilustração de sono" width="671" height="1000" loading="lazy" decoding="async"><div class="sleep-grid">${values}</div></main>`);
       return;
     }
     if(current===24){
       const items=[
-        ['vegetariana','meal-vegetarian.webp','Eu sou vegetariana','Verduras, grãos, mas sem carne animal'],
-        ['vegana','meal-vegan.webp','Eu sou vegana','Puramente à base de plantas, sem produtos de origem animal'],
-        ['gluten','meal-glutenfree.webp','Não contém glúten','Excluir produtos de grãos que contenham glúten'],
-        ['lactose','meal-lactosefree.webp','Sem lactose','Excluir produtos lácteos'],
-        ['semrestricoes','meal-norestrictions.webp','Sem restrições','Aberto a todos os alimentos']
+        ['vegetariana','refeicao.svg','Eu sou vegetariana','Verduras, grãos, mas sem carne animal'],
+        ['vegana','refeicao.svg','Eu sou vegana','Puramente à base de plantas, sem produtos de origem animal'],
+        ['gluten','refeicao.svg','Não contém glúten','Excluir produtos de grãos que contenham glúten'],
+        ['lactose','refeicao.svg','Sem lactose','Excluir produtos lácteos'],
+        ['semrestricoes','refeicao.svg','Sem restrições','Aberto a todos os alimentos']
       ];
       const chosen=Array.isArray(answers.mealPreferences)?answers.mealPreferences:[];
       const values=items.map(([value,img,title,desc])=>`<button type="button" class="meal-card ${chosen.includes(value)?'selected':''}" data-multi="mealPreferences" data-value="${value}" aria-pressed="${chosen.includes(value)?'true':'false'}"><img class="meal-thumb" src="/pagina/images/${img}" alt="" width="64" height="64" loading="lazy" decoding="async"><span class="meal-copy"><strong>${title}</strong><small>${desc}</small></span><span class="option-check">${chosen.includes(value)?'✓':''}</span></button>`).join('');
@@ -294,7 +299,7 @@
     }
     const href=escapeHTML(checkoutHref());
     // A área de pagamento não existe no HTML inicial: só é inserida após 323 s.
-    wrap(`<main class="stage"><h1>Conheça o <span class="hl">Programa de Calistenia Asiática em Casa</span></h1><p class="desc">Você respondeu ao quiz. Veja o que o programa de 21 dias oferece e como acompanhar os exercícios em casa pelo celular.</p><div class="video-wrap"><vturb-smartplayer id="vid-6af495416685e101a472e87e" style="display:block;margin:0 auto;width:100%;max-width:400px"><div class="vturb-player-placeholder" style="position:relative;width:100%;padding:178.21782178217822% 0 0;z-index:0;background-color:black"></div></vturb-smartplayer></div><div id="offer-unlock-area" aria-live="polite"></div></main>`,'offer');
+    wrap(`<main class="stage"><h1>Conheça o <span class="hl">Programa de Calistenia Asiática em Casa</span></h1><p class="desc">Você respondeu ao quiz. Veja o que o programa de 21 dias oferece e como acompanhar os exercícios em casa pelo celular.</p><div class="video-wrap"><vturb-smartplayer id="vid-6afba5f7d4334aee81183338" style="display:block;margin:0 auto;width:100%;max-width:400px"><div class="vturb-player-placeholder" style="position:relative;width:100%;padding:178.21782178217822% 0 0;z-index:0;background-color:black"></div></vturb-smartplayer></div><div id="offer-unlock-area" aria-live="polite"></div></main>`,'offer');
     attachVTurb();
     const revealOffer=()=>{
       if(current!==35){ if(offerUnlockTimer)clearTimeout(offerUnlockTimer);offerUnlockTimer=null;return; }
@@ -305,7 +310,7 @@
       offerUnlockTimer=null;
       if(slot.dataset.unlocked==='true')return;
       slot.dataset.unlocked='true';
-      slot.innerHTML=`<div class="offer-price"><small>Pagamento único</small><div>R$ 37,90</div></div><p class="offer-price-caption">Acesso ao programa de 21 dias</p><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">QUERO COMEÇAR AGORA ›</a><p class="trust">🔒 Checkout seguro na Wiapy • Compra pela plataforma de pagamento</p><section class="panel"><h2>O que está incluído</h2><ul class="list-check"><li>Exercícios orientados para fazer em casa</li><li>Sequência progressiva para 21 dias</li><li>Orientações para iniciar no seu ritmo</li><li>Exercícios com foco em força e mobilidade</li></ul></section><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">GARANTIR MEU ACESSO — R$ 37,90 ›</a><p class="tiny">Resultados individuais variam. Respeite seus limites físicos e consulte um profissional de saúde se necessário.</p>`;
+      slot.innerHTML=`<div class="offer-price"><small>Pagamento único</small><div>R$ 37,90</div></div><p class="offer-price-caption">Acesso ao programa de 21 dias</p><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">QUERO COMEÇAR AGORA ›</a><p class="trust">🔒 Checkout seguro na Mivvo • Compra pela plataforma de pagamento</p><section class="panel"><h2>O que está incluído</h2><ul class="list-check"><li>Exercícios orientados para fazer em casa</li><li>Sequência progressiva para 21 dias</li><li>Orientações para iniciar no seu ritmo</li><li>Exercícios com foco em força e mobilidade</li></ul></section><a class="checkout" href="${href}" data-checkout rel="noopener noreferrer">GARANTIR MEU ACESSO — R$ 37,90 ›</a><p class="tiny">Resultados individuais variam. Respeite seus limites físicos e consulte um profissional de saúde se necessário.</p>`;
     };
     revealOffer();
   }

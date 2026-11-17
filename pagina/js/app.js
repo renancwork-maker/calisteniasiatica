@@ -568,7 +568,7 @@
     const container=root.querySelector('[data-stage33-progress]');
     if(!container || current!==33) return;
     const fill=container.querySelector('[data-stage33-fill]');
-    const value=container.querySelector('[data-stage33-percent]');
+    const value=root.querySelector('[data-stage33-percent]');
     const started=performance.now();
     let moved=false;
     const update=()=>{

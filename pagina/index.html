@@ -199,22 +199,75 @@ html,body{background:#fff!important;color:#121212!important;font-family:Poppins,
 @media(min-width:700px){.ref-landing{max-width:480px!important}.reference-stage{max-width:480px!important}.ref-age-layout .hero-img{right:-42px!important;top:0!important;width:276px!important;height:414px!important}.ref-age-layout .btns{width:100%!important;margin-bottom:12px!important}}
 @media(max-width:380px){.ref-age-layout{min-height:370px}.ref-age-layout .hero-img{width:250px!important;height:370px!important;right:-40px!important}.ref-age-layout .btn{min-height:57px!important;height:57px!important}}
 
+
+/* First-screen exact navigation target: no intermediate introduction */
+.ref-landing{background:#fff!important;max-width:440px!important;padding:12px 14px 8px!important;min-height:calc(100svh - 55px)!important;justify-content:flex-start!important}
+.ref-landing .reference-banner{width:100%!important;aspect-ratio:8/3!important;max-height:155px!important;object-fit:contain!important;margin:2px auto 6px!important}
+.ref-age-heading{font-size:16px!important;line-height:1.3!important;margin:8px auto 14px!important}
+.ref-age-layout{min-height:0!important;flex:1!important;justify-content:flex-end!important;position:relative!important}
+.ref-age-layout .hero-img{width:min(78vw,355px)!important;height:auto!important;max-height:min(75svh,540px)!important;right:-27px!important;top:auto!important;bottom:5px!important;object-position:bottom right!important;z-index:1!important}
+.ref-age-layout .btns{margin:0 0 8px!important;gap:9px!important;z-index:3!important}
+.ref-age-layout .btn{height:61px!important;min-height:61px!important;background:rgba(255,255,255,.91)!important;border:1.5px solid #72b4ff!important;border-radius:12px!important;font-size:14px!important;font-weight:800!important}
+.ref-age-layout .btn:focus-visible{outline:3px solid #007aff;outline-offset:2px}
+@media(max-width:390px){.ref-landing{padding-left:11px!important;padding-right:11px!important}.ref-age-layout .hero-img{right:-23px!important;width:min(82vw,345px)!important}.ref-age-layout .btn{min-height:59px!important;height:59px!important}}
+@media(min-width:700px){.ref-landing{max-width:480px!important}.ref-age-layout .hero-img{right:-20px!important;width:370px!important;max-height:560px!important}}
+
+
+/* Ajustes visuais isolados para as primeiras 20 telas do quiz masculino */
+.ref20-page{background:#fff;color:#090909}
+.ref20{--ref-blue:#087cff;--ref-border:#75b1ff;flex:1;width:100%;max-width:520px;margin:0 auto;padding:20px 16px 18px;display:flex;flex-direction:column;min-height:calc(100svh - 62px);font-family:Poppins,Arial,Helvetica,sans-serif;color:#090909}
+.ref20-title{font-size:clamp(21px,5.4vw,25px);line-height:1.14;letter-spacing:-.025em;font-weight:850;text-align:center;margin:2px auto 18px;max-width:460px;color:#050505}
+.ref20-title em{font-style:normal;color:var(--ref-blue)}.ref20-red{color:#ec323d}
+.ref20-sub{font-size:15px;line-height:1.38;text-align:center;color:#4d4d4d;margin:-6px auto 15px;max-width:440px}
+.ref20-wide{display:block;width:100%;max-width:440px;height:auto;max-height:332px;object-fit:cover;border-radius:10px;margin:0 auto 17px}
+.ref20-wide.exercise{max-height:260px;aspect-ratio:1.76;object-fit:cover}
+.ref20-options{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;width:100%;margin:0 auto;max-width:440px}
+.ref20-options.compact{gap:10px}.ref20-options.tall{gap:12px}
+.ref20-choice{background:#fff;border:1.2px solid var(--ref-border);border-radius:15px;min-height:58px;width:100%;display:flex;align-items:center;text-align:left;gap:12px;padding:10px 17px;color:#050505;font-size:15px;line-height:1.26;font-weight:800;box-shadow:0 4px 7px #11244b12;cursor:pointer;transition:background .14s,border-color .14s}
+.ref20-choice:focus-visible{outline:3px solid #0669d7;outline-offset:2px}
+.ref20-choice.selected{background:#e3f1ff;border-color:#0080ff}
+.ref20-option-name{flex:1;min-width:0}.ref20-option-name small{display:block;color:#788290;font-weight:400;font-size:12px;margin:4px 0 0}
+.ref20-chevron{color:#858585;font-size:16px;flex:0 0 16px;text-align:center;font-weight:400}
+.ref20-check{border:1.5px solid #0783ff;border-radius:6px;width:22px;height:22px;flex:0 0 22px;color:#fff;text-align:center;line-height:19px;font-size:15px;font-weight:700}
+.ref20-choice.selected .ref20-check{background:#0678ef}
+.ref20-choice.exclusive{border-color:#79c89b}.ref20-choice.exclusive.selected{background:#dff6e9}
+.ref20-choice.has-media{min-height:83px;padding:0 12px 0 0;overflow:hidden}
+.ref20-thumb{width:90px;height:85px;object-fit:cover;flex-shrink:0;align-self:stretch;background:#f6f6f6}
+.ref20-emoji{font-size:23px;min-width:30px;text-align:center}
+.ref20-bottom{position:sticky;bottom:0;z-index:8;display:flex;margin:auto auto 0;width:100%;max-width:445px;padding:16px 4px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(0deg,#fff 65%,#ffffffef 85%,#ffffff00);}
+.ref20-cta{border:0;width:100%;min-height:54px;border-radius:12px;color:#fff;background:#087cff;font-size:15px;font-weight:850;box-shadow:0 0 0 5px #d4f2e0;cursor:pointer;padding:9px 15px}
+.ref20-cta:disabled{opacity:.57;cursor:not-allowed}.ref20-cta:focus-visible{outline:3px solid #023e97;outline-offset:4px}
+.ref20-info{text-align:center}.ref20-info .tight{margin:6px auto 15px}.ref20-info .ref20-statement{font-size:15px;line-height:1.5;max-width:445px;margin:0 auto 15px}
+.ref20-group .ref20-wide{max-height:320px;aspect-ratio:1.33;object-fit:cover}
+.ref20-small-flag{font-size:13px;font-weight:700;color:#9c4b20;margin:24px auto 0}
+.ref20-info-hero{max-width:440px;display:block;width:100%;max-height:345px;object-fit:contain;margin:5px auto 18px}
+.ref20-note{background:#e1f0ff;border:1px solid #bfd8ff;border-radius:8px;padding:16px;font-weight:750;font-size:14px;max-width:445px;margin:4px auto}
+.ref20-app-image{width:100%;max-width:460px;max-height:310px;object-fit:contain;display:block;margin:6px auto 18px}
+.ref20-split{width:100%;max-width:445px;margin:0 auto;display:grid;grid-template-columns:minmax(0, .94fr) minmax(0,1.06fr);align-items:start;gap:9px}
+.ref20-side-image{width:100%;height:350px;object-fit:contain;object-position:center top}
+.ref20-split-options{display:flex;flex-direction:column;gap:10px}.ref20-split-options .ref20-choice{min-height:60px;padding:10px 11px;font-size:14px}
+.ref20-private{font-size:11px;color:#6d7078;text-align:center;margin:14px auto 8px}
+.ref20-hint{font-size:12px;line-height:1.4;color:#754b20;background:#fff7e8;border:1px solid #ffdfaf;border-radius:8px;padding:12px;margin:12px auto;max-width:440px}
+.ref20-bodyinfo .ref20-title{color:#5f6773}.ref20-body-comparison{display:block;width:100%;max-width:440px;object-fit:contain;margin:12px auto 20px;border-radius:15px}
+.left-pride .ref20-side-image{height:290px}
+/* Intro - age selector from the exact reference sequence */
+.ref-male-first{background:#fff;display:flex;flex-direction:column;align-items:center;padding:18px 12px 26px;min-height:calc(100svh - 55px);position:relative;overflow:hidden}
+.ref-male-first .reference-banner{position:relative;z-index:2;width:min(100%,455px);height:auto;max-height:165px;object-fit:contain;margin:0 auto 12px}
+.ref-intro-age{z-index:4;text-align:center;font-size:16px;color:#000;font-weight:800;margin:0 auto 12px;max-width:440px}
+.ref-male-person{position:absolute;z-index:1;width:55%;max-width:275px;height:auto;object-fit:contain;right:-10px;top:220px;pointer-events:none}
+.ref-male-age-options{width:59%;display:grid;gap:12px;z-index:3;align-self:flex-start;margin:16px 0 0 0;max-width:260px}
+.ref-age-btn{background:#fff;border:1px solid #7eb4ff;border-radius:16px;min-height:57px;display:flex;justify-content:space-between;align-items:center;padding:12px 17px;text-align:left;font-size:14px;font-weight:800;box-shadow:0 3px 7px #15447711;color:#050505}
+.ref-age-btn .option-arrow{color:#7c838b;font-size:19px}
+.ref-age-btn:focus-visible{outline:3px solid #0077ff;outline-offset:3px}
+.ref-first-note{z-index:3;background:#e4f0ff;border:1px solid #bfd7ff;border-radius:7px;width:100%;margin:auto auto 14px;padding:10px 12px;text-align:center;font-size:12px;font-weight:750;color:#070707}
+.ref-first-privacy{font-size:11px;z-index:3;text-align:center;color:#858585;margin:0 auto;max-width:420px}
+@media(max-width:380px){.ref20{padding:17px 12px 13px}.ref20-thumb{width:78px}.ref20-choice.has-media{min-height:76px}.ref20-choice{font-size:14px}.ref20-split-options .ref20-choice{font-size:12px}.ref20-side-image{height:310px}.ref-male-person{max-width:255px;width:59%;right:-17px;top:213px}.ref-male-age-options{width:58%}.ref-age-btn{padding:10px 11px;font-size:13px}}
+@media(min-width:700px){.ref20{max-width:600px;padding-top:30px}.ref20-title{font-size:26px}.ref-male-first{max-width:780px;width:100%;margin:0 auto;min-height:740px}.ref-male-first .reference-banner{width:520px;max-height:200px}.ref-male-person{right:40px;top:245px;width:340px;max-width:340px}.ref-male-age-options{width:300px;max-width:300px;margin-left:80px}.ref20-split{max-width:530px}.ref20-wide{max-width:500px}}
+
 </style>
 <script defer src="/pagina/js/app.js"></script>
 </head>
 <body>
-<div id="root">
-<div class="page" data-boot-quiz-lead>
-  <header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">by Atlas</span></header>
-  <main class="quiz-lead-stage">
-    <div class="quiz-lead-box">
-      <h1>Calistenia Asiática: <span>um novo jeito de treinar em casa</span></h1>
-      <p>Conheça o programa de 21 dias, com exercícios de força e mobilidade que podem ser adaptados ao seu ritmo.</p>
-      <p>Os resultados variam de pessoa para pessoa. Responda às perguntas para conhecer a proposta.</p>
-      <button class="quiz-lead-button" type="button" data-begin-quiz>COMEÇAR O QUIZ</button>
-    </div>
-  </main>
-</div>
-</div>
+<div id="root"><div class="page visual-reference" data-boot-intro><header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">by Atlas</span></header><main class="main ref-landing ref-male-first"><img class="reference-banner" src="/pagina/images/reference-banner.webp" alt="Calistenia Asiática para homens iniciantes" width="800" height="300" fetchpriority="high"><h1 class="ref-intro-age">Selecione sua idade para começar 👇🏻</h1><img class="ref-male-person" src="/pagina/images/reference-hero.webp" alt="Praticante de calistenia" width="400" height="600" decoding="async" fetchpriority="high"><div class="ref-male-age-options"><button type="button" class="ref-age-btn" data-age="30 – 39 anos"><span>30 – 39 anos</span><span class="option-arrow">➜</span></button><button type="button" class="ref-age-btn" data-age="40 – 49 anos"><span>40 – 49 anos</span><span class="option-arrow">➜</span></button><button type="button" class="ref-age-btn" data-age="50 – 59 anos"><span>50 – 59 anos</span><span class="option-arrow">➜</span></button><button type="button" class="ref-age-btn" data-age="+ 60 anos"><span>+ 60 anos</span><span class="option-arrow">➜</span></button></div><div class="ref-first-note">Faça esse teste e conheça uma proposta de exercícios para sua idade e rotina.</div><p class="ref-first-privacy">🔒 Suas respostas são privadas e usadas para organizar sua experiência no quiz.</p></main></div></div>
 <noscript>Ative o JavaScript para responder ao questionário de calistenia. <a href="https://app.mivvo.com.br/checkout/01a1e6d7-3f74-78a3-ad79-1e15491863ed">Acessar oferta</a>.</noscript>
 </body></html>

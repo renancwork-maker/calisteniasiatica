@@ -21,7 +21,7 @@
     return result ? Math.max(1,Math.min(35,Number(result[1]))) : 1;
   };
   let current = getStep();
-  let showQuizLead = current === 1;
+  let showQuizLead = false;
   let answers = {};
   if (current === 1) { try { sessionStorage.removeItem(STORAGE_KEY); } catch (_err) {} }
   try { answers = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}') || {}; } catch (_err) { answers = {}; }
@@ -193,7 +193,7 @@
     root.innerHTML=`<div class="page" data-boot-quiz-lead><header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">by Atlas</span></header><main class="quiz-lead-stage"><div class="quiz-lead-box"><h1>Calistenia Asiática: <span>um novo jeito de treinar em casa</span></h1><p>Conheça o programa de 21 dias, com exercícios de força e mobilidade que podem ser adaptados ao seu ritmo.</p><p>Os resultados variam de pessoa para pessoa. Responda às perguntas para conhecer a proposta.</p><button class="quiz-lead-button" type="button" data-begin-quiz>COMEÇAR O QUIZ</button></div></main></div>`;
   }
   function intro() {
-    root.innerHTML=`<div class="page slide-in visual-reference" data-boot-intro><header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">by Atlas</span></header><main class="main ref-landing"><img class="reference-banner" src="/pagina/images/reference-banner.webp" alt="O método de Calistenia Asiática para homens iniciantes" width="800" height="300" fetchpriority="high"><p class="question-age ref-age-heading">Selecione sua idade para começar 👇🏼</p><div class="ref-age-layout"><div class="btns">${['18 – 29','30 – 39','40 – 49','50+'].map(a=>`<button type="button" class="btn" data-age="${a}"><span>${a}</span><span class="arrow">›</span></button>`).join('')}</div><img class="hero-img" src="/pagina/images/reference-hero.webp" alt="Praticante de calistenia asiática" width="400" height="600" decoding="async"></div><div class="reference-alert">Faça o quiz e conheça uma proposta de exercícios para seu nível e sua rotina.</div><footer class="ftr">🔒 Suas respostas são privadas e utilizadas para apresentar o programa. <a href="#">Política de Privacidade</a></footer></main></div>`;
+    root.innerHTML=`<div class="page visual-reference" data-boot-intro><header class="hdr"><span class="hdr-logo">CALISTENIA</span><span class="hdr-badge">by Atlas</span></header><main class="main ref-landing ref-male-first"><img class="reference-banner" src="/pagina/images/reference-banner.webp" alt="Calistenia Asiática para homens iniciantes" width="800" height="300" fetchpriority="high"><h1 class="ref-intro-age">Selecione sua idade para começar 👇🏻</h1><img class="ref-male-person" src="/pagina/images/reference-hero.webp" alt="Praticante de calistenia" width="400" height="600" decoding="async" fetchpriority="high"><div class="ref-male-age-options">${['30 – 39 anos','40 – 49 anos','50 – 59 anos','+ 60 anos'].map(a=>`<button type="button" class="ref-age-btn" data-age="${a}"><span>${a}</span><span class="option-arrow">➜</span></button>`).join('')}</div><div class="ref-first-note">Faça esse teste e conheça uma proposta de exercícios para sua idade e rotina.</div><p class="ref-first-privacy">🔒 Suas respostas são privadas e usadas para organizar sua experiência no quiz.</p></main></div>`;
   }
   function screenText(title,desc,content) {
     wrap(`<main class="stage"><h1>${escapeHTML(title)}</h1><p class="desc">${escapeHTML(desc)}</p>${content}</main>`);
@@ -314,13 +314,89 @@
     };
     revealOffer();
   }
+
+  /* Etapas 2–20: reconstrução visual dos vinte prints enviados em sequência.
+     A navegação, a oferta, o temporizador, as UTMs e os scripts de pagamento não são alterados. */
+  function renderFirstTwenty(){
+    const asset = (file,cls='',alt='')=>`<img src="/pagina/images/${file}" class="${cls}" alt="${alt}" loading="lazy" decoding="async">`;
+    const bottom = (text='Continuar →',disabled=false)=>`<div class="ref20-bottom"><button type="button" class="ref20-cta" data-next ${disabled?'disabled':''}>${text}</button></div>`;
+    const page=(title,content='',sub='',cls='',footer='')=>{
+      const h=title?`<h1 class="ref20-title">${title}</h1>`:'';
+      const description=sub?`<p class="ref20-sub">${sub}</p>`:'';
+      wrap(`<main class="ref20 ${cls}">${h}${description}${content}${footer}</main>`,'ref20-page');
+    };
+    const choice=(key,label,value,{img='',icon='',desc='',multi=false,exclusive=false}={})=>{
+      const sel=multi?(Array.isArray(answers[key])&&answers[key].includes(value)):answers[key]===value;
+      const attr=multi?'data-multi':'data-single';
+      const thumb=img?asset(img,'ref20-thumb',''):icon?`<span class="ref20-emoji">${icon}</span>`:'';
+      return `<button type="button" class="ref20-choice ${thumb?'has-media':''} ${sel?'selected':''} ${exclusive?'exclusive':''}" ${attr}="${key}" data-value="${value}" aria-pressed="${sel?'true':'false'}">${thumb}<span class="ref20-option-name">${label}${desc?`<small>${desc}</small>`:''}</span><span class="${multi&&!exclusive?'ref20-check':'ref20-chevron'}">${multi&&!exclusive?(sel?'✓':''):'➜'}</span></button>`;
+    };
+    const multi=(key,items)=>items.map((x,i)=>choice(key,x.label,x.value??String(i),{img:x.img,icon:x.icon,multi:true,exclusive:x.exclusive})).join('');
+    const selected=(key)=>Array.isArray(answers[key])&&answers[key].length>0;
+    switch(current){
+      case 2:
+        page('',`${asset('male-group.webp','ref20-wide','Grupo de homens praticantes')}<h1 class="ref20-title tight">Eles conseguiram e <em>você também pode</em></h1><p class="ref20-statement">Conheça exercícios em casa para desenvolver força, mobilidade e uma rotina de movimento.</p><p class="ref20-small-flag">🔥 Comece no seu ritmo e conheça a proposta do programa.</p>`,'','ref20-info ref20-group',bottom('Continuar'));
+        break;
+      case 3:
+        page('Você já experimentou a <em>calistenia asiática?</em>',`<div class="ref20-split ref20-left-image">${asset('male-coach.webp','ref20-side-image','Homem demonstrando exercício')}<div class="ref20-split-options">${choice('calistheniaExperience','Sim, já pratiquei','sim')}${choice('calistheniaExperience','Já ouvi falar','ouvi')}${choice('calistheniaExperience','Nunca fiz, mas tenho interesse','nunca')}</div></div>`,'Você não precisa de experiência para conhecer os exercícios.','ref20-questions');
+        break;
+      case 4:
+        page('A Calistenia Asiática <em>é diferente da calistenia comum.</em>',`${asset('male-dip.webp','ref20-info-hero','Homem fazendo exercício com apoio numa cadeira')}<div class="ref20-note">Vou te apresentar movimentos para treinar em casa, usando o peso do próprio corpo.</div>`,'A proposta é trabalhar força e mobilidade com exercícios progressivos.','ref20-info',bottom('CONTINUAR →'));
+        break;
+      case 5:
+        page('Qual objetivo é <em>mais importante</em> pra você hoje?',`<div class="ref20-options">${choice('mainGoal','Perder peso e melhorar a composição corporal','0',{img:'goal-loss.webp'})}${choice('mainGoal','Ganhar força e músculos','1',{img:'goal-muscle.webp'})}${choice('mainGoal','Ter mais saúde e disposição','2',{img:'goal-fitness.webp'})}</div>`,'','ref20-questions');
+        break;
+      case 6:
+        page('Como você descreveria seu <em>corpo atual?</em>',`<div class="ref20-options tall">${choice('bodyType','Magro','0',{img:'body-slim.webp'})}${choice('bodyType','Falso magro','1',{img:'body-average.webp'})}${choice('bodyType','Um pouco acima do peso','2',{img:'body-overweight.webp'})}${choice('bodyType','Bem acima do peso','3',{img:'body-large.webp'})}</div>`,'','ref20-questions');
+        break;
+      case 7:
+        {const opts=[{label:'Estou acima do peso há bastante tempo',value:'peso',icon:'⚖️'},{label:'Meu corpo vive dolorido e travado',value:'dor',icon:'😵'},{label:'Vivo cansado e sem energia',value:'cansaco',icon:'🥱'},{label:'Sinto uma queda na minha disposição',value:'disposicao',icon:'😕'},{label:'Durmo muito mal',value:'sono',icon:'😴'},{label:'Minha mente não desacelera',value:'mente',icon:'😮‍💨'},{label:'Só quero cuidar da saúde',value:'nenhum',exclusive:true}];page('Qual dessas situações mais te <span class="ref20-red">incomoda</span> hoje?',`<div class="ref20-options compact">${multi('discomforts',opts)}</div><p class="ref20-private">🔒 Seus dados são privados e protegidos</p>`,'Selecione todas as opções aplicáveis.','ref20-questions',bottom('Continuar →',!selected('discomforts')));break;}
+      case 8:
+        page('Qual é o corpo que você <em>deseja ter?</em>',`<div class="ref20-options tall">${choice('dreamBody','Magro','0',{img:'body-slim.webp'})}${choice('dreamBody','Definido','1',{img:'body-dream.webp'})}${choice('dreamBody','Forte e volumoso','2',{img:'male-abs.webp'})}</div>`,'','ref20-questions');
+        break;
+      case 9:
+        {const opts=[{label:'Barriga grande',value:'abdomen',img:'region-belly.webp'},{label:'Peitoral caído',value:'peito',img:'region-chest.webp'},{label:'Braços finos',value:'bracos',img:'region-shoulder.webp'},{label:'Pernas finas',value:'pernas',img:'region-legs.webp'}];page('Quais são as áreas que você <em>quer focar primeiro?</em>',`<div class="ref20-options tall">${multi('targetZones',opts)}</div>`,'Escolha todas que se aplicam.','ref20-questions',bottom('Continuar →',!selected('targetZones')));break;}
+      case 10:
+        page('',`${asset('male-app.webp','ref20-app-image','Prévia ilustrativa do aplicativo')}<h1 class="ref20-title tight">Conheça uma rotina de <em>exercícios em casa</em></h1><p class="ref20-statement">O programa reúne aulas e orientações para trabalhar força e mobilidade, respeitando seu ritmo.</p>`,'','ref20-info',bottom('Continuar →'));
+        break;
+      case 11:
+        page('',`${asset('male-lunge.webp','ref20-wide','Homem praticando calistenia ao ar livre')}<h1 class="ref20-title tight">Exercícios para <em>fortalecer o corpo</em> sem sair de casa</h1><p class="ref20-statement">Com movimentos progressivos, você pode incluir a calistenia na sua rotina. O tempo de treino varia conforme a atividade.</p>`,'','ref20-info',bottom('Criar meu treino personalizado →'));
+        break;
+      case 12:
+        page('Com que <em>frequência</em> você se exercita?',`<div class="ref20-options">${choice('exerciseFrequency','Quase todos os dias','diario')}${choice('exerciseFrequency','Algumas vezes por semana','semanal')}${choice('exerciseFrequency','Algumas vezes por mês','mensal')}${choice('exerciseFrequency','Nunca','nunca')}</div>`,'','ref20-questions');
+        break;
+      case 13:
+        page('Você se sente <em>confortável</em> fazendo esse movimento?',`${asset('male-squat.webp','ref20-wide exercise','Homem realizando agachamento')}<div class="ref20-options">${choice('squatComfort','Não','nao')}${choice('squatComfort','Sim','sim')}</div>`,'','ref20-questions');
+        break;
+      case 14:
+        page('Quantas <em>flexões</em> você consegue fazer seguidas?',`${asset('male-exercise.webp','ref20-wide exercise','Homem fazendo flexões')}<div class="ref20-options">${choice('pushupAbility','Não consigo fazer flexões','0')}${choice('pushupAbility','1 – 10 flexões','1-10')}${choice('pushupAbility','11 – 20 flexões','11-20')}${choice('pushupAbility','Mais de 20 flexões','20+')}</div>`,'','ref20-questions');
+        break;
+      case 15:
+        page('Quão <em>flexível</em> você é?',`${asset('male-stretch.webp','ref20-wide exercise','Homem alongando o corpo')}<div class="ref20-options">${choice('flexibility','Muito flexível','muito')}${choice('flexibility','Um pouco flexível','pouco')}${choice('flexibility','Sou travado','travado')}${choice('flexibility','Não tenho certeza','naosei')}</div>`,'','ref20-questions');
+        break;
+      case 16:
+        page('Como você descreveria um <em>dia comum</em> seu?',`<div class="ref20-options">${choice('dailyActivity','Fico a maior parte do tempo parado','parado',{icon:'🪑'})}${choice('dailyActivity','Me movimento um pouco','pouco',{icon:'👟'})}${choice('dailyActivity','Sou ativo na maior parte do tempo','ativo',{icon:'🏃'})}</div><p class="ref20-hint">A rotina ajuda a entender o ponto de partida de cada pessoa.</p>`,'','ref20-questions');
+        break;
+      case 17:
+        page('E como seu peso <em>costuma mudar?</em>',`<div class="ref20-options">${choice('weightPattern','Engordo fácil, mas emagreço devagar','lento')}${choice('weightPattern','Engordo fácil e emagreço fácil','oscilante')}${choice('weightPattern','Tenho dificuldade para ganhar peso ou massa muscular','ganhar')}</div>`,'','ref20-questions');
+        break;
+      case 18:
+        page('',`<h1 class="ref20-title muted">Seu corpo tem características próprias e seu treino pode respeitar isso.</h1><p class="ref20-statement">Vamos considerar seus objetivos e sua rotina para apresentar uma proposta de exercícios progressivos.</p>${asset('body-selection.webp','ref20-body-comparison','Exemplos ilustrativos de tipos físicos')}`,'','ref20-info ref20-bodyinfo',bottom('Continuar →'));
+        break;
+      case 19:
+        page('Quando foi a última vez que <em>sentiu orgulho</em> do seu corpo?',`<div class="ref20-split left-pride">${asset('male-fitness.webp','ref20-side-image pride-image','Homem praticante')}<div class="ref20-split-options">${choice('fitnessHistory','Menos de 1 ano atrás','menos1')}${choice('fitnessHistory','1 – 3 anos atrás','1-3')}${choice('fitnessHistory','Mais de 3 anos','mais3')}${choice('fitnessHistory','Nem me lembro','nunca')}</div></div>`,'','ref20-questions');
+        break;
+      case 20:
+        {const opts=[{label:'Costas/lombar',value:'costas',img:'region-back.webp'},{label:'Joelhos/pernas',value:'joelhos',img:'region-knee.webp'},{label:'Nenhuma dessas',value:'nenhum',exclusive:true}];page('Você sente algum <span class="ref20-red">desconforto ou dor</span> em alguma destas áreas?',`<div class="ref20-options">${multi('painAreas',opts)}</div>`,'Para exercícios que provoquem dor, procure orientação de um profissional de saúde.','ref20-questions',bottom('Continuar →',!selected('painAreas')));break;}
+    }
+  }
+
   function render() {
     document.title='calisteniasiatica';
     if(current!==35 && offerUnlockTimer){clearTimeout(offerUnlockTimer);offerUnlockTimer=null;}
     if(current===1){
-      if(showQuizLead){if(!root.querySelector('[data-boot-quiz-lead]'))introSplash();}
-      else if(!root.querySelector('[data-boot-intro]'))intro();
-    } else if(current===35)offer(); else if(current<=19)renderReference(); else renderQuestion(questions[current]);
+      intro();
+    } else if(current===35)offer(); else if(current<=20)renderFirstTwenty(); else renderQuestion(questions[current]);
     window.scrollTo({top:0,behavior:'instant'});
   }
   function goTo(next,replace=false) {
@@ -360,7 +436,7 @@
       let values=Array.isArray(answers[key])?answers[key].slice():[];
       if(values.includes(value))values=values.filter(item=>item!==value);
       else { if((current===13&&value==='5')||value==='sem'||value==='nada') values=[]; else values=values.filter(item=>current===13?item!=='5':(item!=='sem'&&item!=='nada')); values.push(value); }
-      answers[key]=values;remember();if(current<=19)renderReference();else renderQuestion(questions[current]);return;
+      if(current<=20 && (key==='discomforts'||key==='painAreas')) { if(value==='nenhum'){values=values.includes('nenhum')?['nenhum']:[];} else {values=values.filter(v=>v!=='nenhum');} } answers[key]=values;remember();if(current<=20)renderFirstTwenty();else renderQuestion(questions[current]);return;
     }
     if(button.hasAttribute('data-save-number')){
       const el=root.querySelector('[data-number]');

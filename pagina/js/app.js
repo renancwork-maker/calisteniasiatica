@@ -11,7 +11,7 @@
   const VTURB_STREAM = 'https://cdn.converteai.net/e040da1c-3494-4229-81c5-b7e4caf21ba7/6afba5ebdac166e521958649/main.m3u8';
   const STORAGE_KEY = 'atlas_calisthenia_21d_answers';
   const OFFER_START_KEY = 'atlas_calisthenia_21d_offer_started';
-  const OFFER_UNLOCK_MS = 323000; // 5m23s após abrir a oferta
+  const OFFER_UNLOCK_MS = 381000; // 6m21s (381 segundos) após abrir a oferta
   let offerUnlockTimer = null;
   const UTM_KEY = 'atlas_calisthenia_21d_traffic';
   const SELECTED_KEYS = new Set(['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id','src','sck','xcod','subid','subid1','subid2','subid3','subid4','subid5','fbclid','gclid','gbraid','wbraid','msclkid','ttclid','gad_source']);
@@ -314,6 +314,7 @@
         <h1>Seu plano de <strong>Calistenia Asiática</strong> está <em>pronto!</em></h1>
         <p class="offer-blue-sub">Assista ao vídeo abaixo e veja como funciona o programa.</p>
         <div class="offer-video-wrap"><vturb-smartplayer id="vid-6afba5f7d4334aee81183338" style="display:block;margin:0 auto;width:100%;max-width:400px"><div class="vturb-player-placeholder" style="position:relative;width:100%;padding:178.21782178217822% 0 0;z-index:0;background-color:black"></div></vturb-smartplayer></div>
+        <div class="offer-below-vsl" data-gated-offer hidden aria-hidden="true" inert>
         ${unlockArea()}
         <section class="offer-blue-section"><h2>O que você vai receber</h2><div class="offer-blue-feature-list">${offerFeatures.map(([title,desc])=>`<div class="offer-blue-feature"><span>✓</span><p><strong>${title}:</strong> ${desc}</p></div>`).join('')}</div></section>
         <section class="offer-blue-app"><h2>Aplicativo fácil de usar e feito <em>para iniciantes!</em></h2><img src="/pagina/images/male-app.webp" alt="Demonstração visual de exercícios no aplicativo" width="600" height="450" loading="lazy" decoding="async"><p>Consulte os exercícios e acompanhe a sequência do programa diretamente pelo celular.</p></section>
@@ -354,6 +355,7 @@
         <section class="offer-purchase-section offer-final-checkout">${payCard()}${unlockArea()}
           <p class="offer-blue-disclaimer">Pagamento único. Confira preço, formas de pagamento e condições de garantia no checkout Mivvo. Os resultados variam de pessoa para pessoa e o programa não substitui avaliação profissional.</p>
         </section>
+        </div>
       </div>
     </main>`,'offer');
     attachVTurb();
@@ -362,6 +364,8 @@
       const remaining=OFFER_UNLOCK_MS-(Date.now()-startedAt);
       if(remaining>0){offerUnlockTimer=setTimeout(revealOffer,Math.min(remaining,1000));return;}
       offerUnlockTimer=null;
+      const belowVideo=root.querySelector('[data-gated-offer]');
+      if(belowVideo){belowVideo.hidden=false;belowVideo.removeAttribute('aria-hidden');belowVideo.removeAttribute('inert');}
       root.querySelectorAll('[data-gated-cta]').forEach(slot=>{slot.hidden=false;});
     };
     revealOffer();

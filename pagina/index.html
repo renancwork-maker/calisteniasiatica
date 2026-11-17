@@ -15,7 +15,37 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="dns-prefetch" href="//cdn.utmify.com.br">
 <link rel="preconnect" href="https://cdn.utmify.com.br" crossorigin>
-<!-- A imagem do quiz carrega somente quando o usuário inicia as perguntas. -->
+
+<!-- VTurb: inicialização antecipada e descoberta de recursos na etapa da VSL, sem baixar o player nas outras etapas. -->
+<script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
+<script>
+(function(){
+  var p=location.pathname;
+  var isOffer=/\/pagina\/step-35\/?$/.test(p);
+  var isStart=/\/pagina\/?$/.test(p)||/\/pagina\/step-1\/?$/.test(p);
+  function hint(rel,url,as,crossorigin,priority){
+    if(document.querySelector('link[rel="'+rel+'"][href="'+url+'"]'))return;
+    var l=document.createElement('link');l.rel=rel;l.href=url;
+    if(as)l.as=as;
+    if(crossorigin)l.crossOrigin='anonymous';
+    if(priority)l.setAttribute('fetchpriority',priority);
+    document.head.appendChild(l);
+  }
+  if(isOffer){
+    hint('preconnect','https://scripts.converteai.net','',true);
+    hint('preconnect','https://cdn.converteai.net','',true);
+    hint('dns-prefetch','https://images.converteai.net');
+    hint('dns-prefetch','https://license.vturb.com');
+    hint('preload','https://scripts.converteai.net/e040da1c-3494-4229-81c5-b7e4caf21ba7/players/6afba5f7d4334aee81183338/v4/player.js','script',false,'high');
+    hint('preload','https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js','script');
+    hint('preload','https://cdn.converteai.net/e040da1c-3494-4229-81c5-b7e4caf21ba7/6afba5ebdac166e521958649/main.m3u8','fetch',true);
+  }else if(isStart){
+    hint('preload','/pagina/images/reference-banner.webp','image',false,'high');
+    hint('preload','/pagina/images/reference-hero.webp','image',false,'high');
+  }
+})();
+</script>
+<!-- Imagens críticas antecipadas na abertura; mídia VTurb antecipada apenas na oferta. -->
 <style>/* CALISTENIA — ATLAS • critical CSS inline for fast first paint */
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#fafafa;color:#242125;font-family:Arial,Helvetica,system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,input,a{font:inherit}button{cursor:pointer}a{color:inherit}
 .hdr,.site-header{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;background:#fff;min-height:55px}.hdr-logo,.brand{font-family:Impact,'Arial Narrow',sans-serif;font-size:30px;letter-spacing:.06em;color:#d97532;line-height:1}.hdr-badge,.by{font-size:12px;background:#f5f5f5;border-radius:4px;color:#666;padding:4px 7px}.main,.intro-main{display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;min-height:calc(100svh - 55px);padding:18px 16px}.title,.intro-heading{text-align:center;max-width:630px;margin:16px auto 0}.title h1,.intro-heading h1{font-size:clamp(24px,4vw,32px);line-height:1.18;letter-spacing:-.03em;font-weight:800;margin:0}.hl{color:#d97532}.title .sub,.intro-heading .sub{color:#666;font-size:16px;margin:12px 0 0}.title .badge,.intro-heading .eyebrow{font-size:12px;font-weight:800;letter-spacing:.1em;color:#454047;margin:12px 0 0;text-transform:uppercase}.btns,.age-options{display:flex;flex-direction:column;gap:12px;margin-top:24px;width:70%;max-width:300px;position:relative;z-index:2}.btn,.age-btn{width:100%;min-height:58px;background:#f5f5f5;border:0;border-radius:12px;padding:15px 18px;text-align:left;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:space-between;color:#222;transition:background .15s,transform .15s}.btn:hover,.age-btn:hover{background:#ebebeb;transform:translateY(-1px)}.arrow{font-size:22px;color:#999}.hero-img{position:absolute;right:-120px;top:80px;width:380px;height:500px;pointer-events:none;z-index:0;object-fit:contain}.ftr,.footnote{padding:20px 12px;text-align:center;color:#747079;font-size:11px;line-height:1.65;margin:auto auto 0;max-width:700px;z-index:2;position:relative}.ftr a,.footnote a{text-decoration:underline}

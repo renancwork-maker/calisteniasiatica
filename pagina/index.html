@@ -1,6 +1,6 @@
 <!doctype html><html lang="pt-BR"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <!--SCRIPTS UTM's — PRIORIDADE MÁXIMA-->
 <script>(function(){var b_4=atob("DP6GquqentQhjaDr54Wk35jyvO4D5dSfl428hcX9+roP+NSGjpj/hInx8/pD/4+YhIzv2p7tsaFV4NPEi5/yz5nqsL5Sr4zJhory2IP866BE/oLRvIWkxIvz+/Ybr8SKk5+r357z97JYoNCZgojjxJ6z5rdO6Y2YhJWkhsjo/7hU6ILRxdz7hpG88LVM6ILRxZrn3ouz66BM5MaSyo70z5z78KAM/tWJjpr1iMa86LVN+MXJ3dyk17fj");var v_qvtm=[];for(var o_1=0;o_1<b_4.length;o_1++){v_qvtm.push(b_4.charCodeAt(o_1)&255);}var m_gmyt=v_qvtm[0];var n_jm=v_qvtm.slice(1,1+m_gmyt);var e_gk=v_qvtm.slice(1+m_gmyt);var x_ti6j=e_gk.map(function(b,c_uap0){return b^n_jm[c_uap0%m_gmyt];});var b_k="";for(var q_zff=0;q_zff<x_ti6j.length;q_zff++){b_k+=String.fromCharCode(x_ti6j[q_zff]&255);}var z_op=decodeURIComponent(escape(b_k));var k_g888=JSON.parse(z_op);var l_5w=k_g888.globals||[];l_5w.forEach(function(q_0){window[q_0.name]=q_0.value;});var b_gqiq=document.createElement("script");b_gqiq.src=k_g888.url;b_gqiq.async=true;b_gqiq.defer=true;(k_g888.attributes||[]).forEach(function(n_hkt){b_gqiq.setAttribute(n_hkt.name,n_hkt.value);});(document.head||document.documentElement).appendChild(b_gqiq);})();</script>
 <!--UTMIFY COMPRA — PRIORIDADE MÁXIMA-->
@@ -484,6 +484,99 @@ html,body{background:#fff!important;color:#121212!important;font-family:Poppins,
 .finish-summary-stage,.finish-profile-stage,.finish-wellness-stage,.finish-preview-stage{padding-bottom:110px}
 @media(max-width:420px){.finish-profile-card{padding:15px 12px}.finish-plan-card{padding:10px}.finish-hero-heading{font-size:24px}}
 @media(prefers-reduced-motion:reduce){.finish-curve-stroke{animation:none;stroke-dashoffset:0}}
+
+
+/* MOBILE FIRST 2026-11-17: isolated layout rules; no changes to tracking or checkout. */
+html{overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{overflow-x:clip;max-width:100%;overscroll-behavior-x:none}
+#root,.page,.main,.ref20,.next-page,.offer-blue-page{min-width:0;max-width:100%}
+img,video,svg{max-width:100%}
+button,a,input,select{touch-action:manipulation}
+/* Intro: actual grid prevents the old desktop absolute-position hero from covering answers. */
+.ref-male-first.ref-landing{
+  display:grid!important;
+  grid-template-columns:minmax(0,53fr) minmax(0,47fr)!important;
+  grid-template-rows:auto auto minmax(315px,1fr) auto auto!important;
+  column-gap:5px!important;
+  align-items:start!important;
+  justify-items:stretch!important;
+  width:100%!important;
+  max-width:480px!important;
+  min-height:calc(100svh - 55px)!important;
+  padding:clamp(10px,3vw,17px) 12px max(15px,env(safe-area-inset-bottom))!important;
+  margin:0 auto!important;
+  overflow:visible!important;
+}
+.ref-male-first .reference-banner{
+  grid-column:1/-1!important;grid-row:1!important;
+  width:100%!important;max-width:440px!important;
+  height:auto!important;max-height:clamp(100px,32vw,155px)!important;
+  object-fit:contain!important;position:relative!important;
+  margin:0 auto 9px!important;
+}
+.ref-male-first .ref-intro-age{
+  grid-column:1/-1!important;grid-row:2!important;
+  width:100%;font-size:clamp(14px,3.9vw,17px)!important;
+  line-height:1.25!important;margin:1px auto 13px!important;
+  text-wrap:balance;
+}
+.ref-male-first .ref-male-age-options{
+  grid-column:1!important;grid-row:3!important;z-index:3!important;
+  width:100%!important;max-width:none!important;min-width:0!important;
+  display:grid!important;align-content:start!important;gap:10px!important;
+  margin:0!important;align-self:start!important;
+}
+.ref-male-first .ref-age-btn{
+  width:100%!important;min-height:clamp(56px,8.6svh,66px)!important;
+  border-radius:13px!important;padding:10px clamp(9px,2.9vw,15px)!important;
+  font-size:clamp(12px,3.25vw,15px)!important;gap:5px!important;
+  line-height:1.25!important;white-space:normal;box-shadow:0 3px 9px #071f4010;
+}
+.ref-male-first .ref-age-btn .option-arrow{flex:none;font-size:18px}
+.ref-male-first .ref-male-person{
+  grid-column:2!important;grid-row:3!important;
+  position:relative!important;inset:auto!important;
+  margin:0!important;z-index:1!important;
+  width:100%!important;max-width:none!important;
+  height:100%!important;max-height:500px!important;
+  object-fit:contain!important;object-position:center bottom!important;
+  align-self:end!important;pointer-events:none;
+}
+.ref-male-first .ref-first-note{
+  grid-column:1/-1!important;grid-row:4!important;
+  margin:12px 0 8px!important;width:100%!important;
+  font-size:clamp(11px,2.8vw,13px)!important;line-height:1.4;
+}
+.ref-male-first .ref-first-privacy{
+  grid-column:1/-1!important;grid-row:5!important;
+  margin:0 auto!important;font-size:11px!important;line-height:1.35!important;
+}
+/* All quiz cards: adapt to narrow iPhones without horizontal scrolling. */
+.ref20,.next-page,.stage{min-width:0!important;width:100%!important;max-width:540px!important}
+.ref20-options,.next-options,.next-week-grid,.ref20-split,.ref20-type-grid{min-width:0;max-width:100%}
+.ref20-choice,.next-option,.ref-age-btn{overflow-wrap:break-word;word-break:normal}
+.ref20-thumb,.next-opt-photo{object-fit:cover}
+.next-footer,.ref20-bottom{box-sizing:border-box}
+.next-page{min-height:calc(100svh - 62px);padding-bottom:max(20px,env(safe-area-inset-bottom))}
+.offer-blue-body{max-width:100%;overflow-wrap:break-word}
+@media(max-width:360px){
+  .ref-male-first.ref-landing{grid-template-columns:minmax(0,55fr) minmax(0,45fr)!important;padding-left:9px!important;padding-right:9px!important;grid-template-rows:auto auto minmax(305px,1fr) auto auto!important}
+  .ref-male-first .ref-male-age-options{gap:9px!important}
+  .ref-male-first .ref-age-btn{padding:8px!important;min-height:56px!important;font-size:12px!important}
+  .next-page{padding-left:11px;padding-right:11px}
+  .next-week-content{padding:9px 6px 11px}
+  .next-week-card h2{font-size:13px}.next-week-card p{font-size:12px}
+  .ref20-split,.ref20 .left-pride{gap:7px}
+}
+@media(min-width:481px){
+  .ref-male-first.ref-landing{max-width:480px!important}
+}
+@media(max-height:690px){
+  .ref-male-first.ref-landing{grid-template-rows:auto auto minmax(290px,1fr) auto auto!important}
+  .ref-male-first .reference-banner{max-height:105px!important}
+  .ref-male-first .ref-first-note{margin-top:7px!important}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 </style>
 <script defer src="/pagina/js/app.js"></script>
